@@ -1,0 +1,1229 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>พื้นผิวกำลังสอง (Quadric Surfaces) — บทเรียนแบบโต้ตอบ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600;700&family=Noto+Serif+Thai:wght@600;700;800&display=swap" rel="stylesheet">
+<script>
+window.__texQ=[];window.__mjReady=false;
+window.MathJax={
+  tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},
+  svg:{fontCache:'global'},
+  startup:{ready(){MathJax.startup.defaultReady();MathJax.startup.promise.then(()=>{window.__mjReady=true;const q=window.__texQ.splice(0);q.forEach(el=>window.typesetEl&&window.typesetEl(el));});}}
+};
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-svg.js" defer></script>
+<script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
+<style>
+:root{
+  --bg:#f5f2ea; --paper:#fffdf8; --ink:#1c2230; --ink2:#3b4252; --muted:#6c6f78; --line:#e3ddcf; --line2:#d6cfbe;
+  --accent:#c2410c; --accent-soft:#fff1e7; --blue:#1d4ed8; --blue-soft:#eaf0ff; --green:#15803d; --green-soft:#eaf7ee;
+  --red:#be123c; --red-soft:#fff0f2; --violet:#6d28d9;
+  --xcol:#d1495b; --ycol:#2a9d8f; --zcol:#3a6ea5;
+  --r:14px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"IBM Plex Sans Thai",system-ui,sans-serif;font-size:16.5px;line-height:1.75}
+a{color:var(--blue)}
+.layout{display:grid;grid-template-columns:260px minmax(0,1fr);max-width:1320px;margin:0 auto}
+aside.toc{position:sticky;top:0;height:100vh;overflow:auto;padding:28px 18px 28px 22px;border-right:1px solid var(--line)}
+.toc .brand{font-family:"Noto Serif Thai",serif;font-weight:800;font-size:19px;line-height:1.35;margin-bottom:4px}
+.toc .sub{font-size:12.5px;color:var(--muted);margin-bottom:18px}
+.toc ol{list-style:none;margin:0;padding:0;counter-reset:none}
+.toc li a{display:flex;gap:10px;align-items:baseline;padding:6px 10px;border-radius:9px;text-decoration:none;color:var(--ink2);font-size:14.5px;line-height:1.45}
+.toc li a .n{font-variant-numeric:tabular-nums;color:var(--muted);font-size:12.5px;min-width:18px}
+.toc li a:hover{background:#ece6d8}
+.toc li a.active{background:var(--ink);color:#fff}
+.toc li a.active .n{color:#cfd3dc}
+.toc .tip{margin-top:20px;font-size:12.5px;color:var(--muted);border-top:1px dashed var(--line2);padding-top:14px}
+main{padding:28px 40px 120px;min-width:0}
+.hero{padding:34px 0 18px}
+.kicker{font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);font-weight:600}
+h1{font-family:"Noto Serif Thai",serif;font-size:44px;line-height:1.25;margin:6px 0 4px;font-weight:800}
+h1 small{display:block;font-family:"IBM Plex Sans Thai";font-size:20px;font-weight:500;color:var(--muted);margin-top:6px}
+.objectives{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:24px 0 8px}
+.obj{background:var(--paper);border:1px solid var(--line);border-radius:var(--r);padding:14px 16px;font-size:15px}
+.obj b{display:block;font-size:13px;color:var(--accent)}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:18px 0}
+.chip{border:1px solid var(--line2);background:var(--paper);border-radius:999px;padding:5px 13px;font-size:14px;text-decoration:none;color:var(--ink2)}
+.chip:hover{border-color:var(--ink)}
+section.sec{padding-top:46px;margin-top:20px;border-top:1px solid var(--line)}
+.sec-h{display:flex;align-items:baseline;gap:14px;margin-bottom:6px}
+.sec-h .num{font-family:"Noto Serif Thai",serif;font-weight:800;font-size:15px;color:#fff;background:var(--ink);border-radius:8px;padding:2px 10px;line-height:1.6}
+h2{font-family:"Noto Serif Thai",serif;font-size:30px;line-height:1.3;margin:0;font-weight:800}
+h2 .en{font-family:"IBM Plex Sans Thai";font-size:16px;color:var(--muted);font-weight:500;margin-left:8px}
+h3{font-size:19px;margin:26px 0 8px;font-weight:700}
+p{margin:8px 0}
+.lead{font-size:17.5px;color:var(--ink2)}
+.card{background:var(--paper);border:1px solid var(--line);border-radius:var(--r);padding:18px 20px;margin:14px 0}
+.formula{background:var(--paper);border:1px solid var(--line);border-left:5px solid var(--accent);border-radius:10px;padding:10px 18px;margin:14px 0;display:flex;align-items:center;gap:18px;flex-wrap:wrap}
+.formula .ttl{font-weight:700;color:var(--accent);font-size:14px;min-width:120px}
+.formula .mj{flex:1;min-width:220px;overflow-x:auto}
+.callout{border-radius:12px;padding:12px 16px;margin:14px 0;font-size:15.5px;border:1px solid}
+.callout b.h{display:block;font-size:13px;letter-spacing:.04em;margin-bottom:2px}
+.callout.key{background:var(--accent-soft);border-color:#f6c9a8}
+.callout.key b.h{color:var(--accent)}
+.callout.note{background:var(--blue-soft);border-color:#c9d6fb}
+.callout.note b.h{color:var(--blue)}
+.callout.warn{background:var(--red-soft);border-color:#f7c3cc}
+.callout.warn b.h{color:var(--red)}
+.callout ul,.card ul{margin:4px 0;padding-left:22px}
+.callout li,.card li{margin:3px 0}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.mini{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:8px 10px 6px;text-align:center}
+.mini>svg{width:100%;height:auto;display:block}
+.mini .cap{font-size:14px;min-height:34px}
+/* Labs */
+.lab{display:grid;grid-template-columns:290px minmax(0,1fr);gap:0;background:var(--paper);border:1px solid var(--line);border-radius:16px;overflow:hidden;margin:18px 0}
+.lab-controls{padding:16px 16px 18px;border-right:1px solid var(--line);background:#fbf8f1}
+.lab-controls .lab-title{font-weight:700;font-size:14px;color:var(--muted);letter-spacing:.04em;margin-bottom:8px;text-transform:uppercase}
+.ctl{display:grid;grid-template-columns:1fr 46px;align-items:center;gap:2px 8px;margin:8px 0;font-size:14px}
+.ctl span{grid-column:1/3;color:var(--ink2)}
+.ctl input[type=range]{width:100%;accent-color:var(--ink)}
+.ctl output{font-variant-numeric:tabular-nums;font-weight:600;text-align:right;font-size:14px}
+.ctl.disabled{opacity:.4}
+.chk{display:flex;gap:8px;align-items:center;font-size:14px;margin:8px 0;cursor:pointer}
+.seg-wrap{margin:9px 0}
+.seg-wrap>span{font-size:14px;color:var(--ink2);display:block;margin-bottom:4px}
+.seg{display:flex;flex-wrap:wrap;gap:4px}
+.seg button,.btn{font:inherit;font-size:13.5px;border:1px solid var(--line2);background:#fff;border-radius:8px;padding:4px 11px;cursor:pointer;color:var(--ink2);line-height:1.5}
+.seg button.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+.btn:hover,.seg button:hover{border-color:var(--ink)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:#fff}
+.btn.primary:hover{background:#9a3412}
+.subhead{font-size:12.5px;font-weight:700;color:var(--accent);margin:16px 0 2px;letter-spacing:.05em;border-top:1px dashed var(--line2);padding-top:12px}
+.lab-view{padding:12px 14px 14px;min-width:0}
+.eqbox{display:flex;align-items:center;gap:12px;flex-wrap:wrap;justify-content:center;min-height:62px;padding:2px 6px;border-bottom:1px solid var(--line)}
+.eqbox .eq{overflow-x:auto;max-width:100%;font-size:17px}
+.badge{display:inline-block;font-size:13px;font-weight:700;padding:3px 11px;border-radius:999px;background:var(--ink);color:#fff;white-space:nowrap}
+.plotwrap{position:relative}
+.plot{height:470px;width:100%}
+.ptools{position:absolute;right:8px;top:8px;display:flex;gap:4px;z-index:5}
+.ptools button{font:inherit;font-size:13px;border:1px solid var(--line2);background:rgba(255,255,255,.92);border-radius:7px;padding:1px 9px;cursor:pointer;color:var(--ink2)}
+.ptools button:hover{border-color:var(--ink)}
+.hint{position:absolute;left:10px;bottom:8px;font-size:12px;color:var(--muted);background:rgba(255,253,248,.85);padding:1px 8px;border-radius:6px;pointer-events:none}
+.trace-out{font-size:14.5px;border-radius:10px;background:#f7f3ea;padding:8px 12px;margin-top:8px}
+.trace-out:empty{display:none}
+.trace-out .tn{font-weight:700;color:#b42318}
+.lab-info{font-size:14.5px;color:var(--ink2);margin-top:8px}
+.lab-info:empty{display:none}
+/* 2D lab */
+.lab2d{display:grid;grid-template-columns:290px minmax(0,1fr);background:var(--paper);border:1px solid var(--line);border-radius:16px;overflow:hidden;margin:18px 0}
+.lab2d .view{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:14px;padding:14px;align-items:start}
+#d2svg>svg{width:100%;height:auto;display:block;background:#fff;border:1px solid var(--line);border-radius:12px}
+mjx-container[display="true"]{overflow-x:auto;overflow-y:hidden;max-width:100%;padding:2px 0}
+.steps,.cls-steps,.out2d{min-width:0}
+.out2d .row{margin:6px 0 12px}
+.out2d .lbl{font-size:12.5px;font-weight:700;color:var(--muted);letter-spacing:.04em}
+.out2d .mjx{overflow-x:auto}
+/* Examples */
+.example{background:var(--paper);border:1px solid var(--line);border-radius:16px;margin:18px 0;overflow:hidden}
+.example .ex-h{display:flex;align-items:center;gap:12px;padding:12px 18px;background:#f8f4eb;border-bottom:1px solid var(--line)}
+.example .ex-h .tag{font-weight:800;color:var(--accent);font-size:14px;white-space:nowrap}
+.example .ex-h .q{flex:1;overflow-x:auto}
+.example .ex-b{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);gap:0}
+.example .steps{padding:12px 18px 16px;border-right:1px solid var(--line)}
+.step{display:none;padding:8px 0 8px 14px;border-left:3px solid var(--line2);margin:6px 0;animation:fade .35s ease}
+.step.show{display:block}
+.step .sn{font-size:12.5px;font-weight:700;color:var(--muted)}
+.step.final{border-left-color:var(--accent);background:var(--accent-soft);border-radius:0 10px 10px 0;padding-right:10px}
+@keyframes fade{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+.ex-ctrl{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
+.example .ex-plot{min-width:0;position:relative}
+.example .ex-plot .plot{height:420px}
+.ex-plot .placeholder{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:15px;text-align:center;padding:20px;background:repeating-linear-gradient(45deg,#fbf8f1,#fbf8f1 10px,#f6f2e8 10px,#f6f2e8 20px)}
+/* table */
+table.sum{width:100%;border-collapse:collapse;background:var(--paper);border:1px solid var(--line);border-radius:14px;overflow:hidden;font-size:15px}
+table.sum th{background:var(--ink);color:#fff;text-align:left;padding:10px 12px;font-weight:600}
+table.sum td{padding:9px 12px;border-top:1px solid var(--line);vertical-align:middle}
+table.sum tr.row{cursor:pointer}
+table.sum tr.row:hover td{background:#f8f3e8}
+table.sum tr.row.sel td{background:var(--accent-soft)}
+table.sum td.nm{font-weight:700;white-space:nowrap}
+.sum-wrap{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);gap:16px;align-items:start}
+.sticky{position:sticky;top:16px}
+.viewer{background:var(--paper);border:1px solid var(--line);border-radius:16px;overflow:hidden}
+.viewer .vh{padding:10px 14px;border-bottom:1px solid var(--line);min-height:58px;display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap}
+.viewer .plot{height:400px}
+.viewer .vf{padding:8px 14px 12px;font-size:14.5px;color:var(--ink2);border-top:1px solid var(--line)}
+ol.proc{counter-reset:p;list-style:none;padding:0;margin:10px 0}
+ol.proc li{counter-increment:p;position:relative;padding:8px 12px 8px 48px;margin:8px 0;background:var(--paper);border:1px solid var(--line);border-radius:12px}
+ol.proc li::before{content:counter(p);position:absolute;left:12px;top:8px;width:26px;height:26px;border-radius:50%;background:var(--accent);color:#fff;font-weight:700;display:flex;align-items:center;justify-content:center;font-size:14px}
+/* classifier */
+.cls{background:var(--paper);border:1px solid var(--line);border-radius:16px;overflow:hidden;margin:18px 0}
+.cls-in{padding:14px 18px;border-bottom:1px solid var(--line);background:#fbf8f1}
+.cls-eq{display:flex;align-items:center;flex-wrap:wrap;gap:6px;font-size:17px}
+.cls-eq input{width:62px;font:inherit;font-size:16px;padding:3px 6px;border:1px solid var(--line2);border-radius:7px;text-align:center;background:#fff}
+.cls-eq input:focus{outline:2px solid var(--accent);border-color:transparent}
+.cls-eq .v{font-style:italic;font-family:"Times New Roman",serif;font-size:19px}
+.cls-pre{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px;align-items:center;font-size:13.5px;color:var(--muted)}
+.cls-out{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr)}
+.cls-steps{padding:12px 18px 16px;border-right:1px solid var(--line)}
+.cls-steps .st{margin:6px 0 12px}
+.cls-steps .st .sn{font-size:12.5px;font-weight:700;color:var(--muted)}
+.cls-steps .mjx{overflow-x:auto}
+.result-pill{display:inline-block;background:var(--accent);color:#fff;font-weight:700;border-radius:999px;padding:3px 14px;font-size:15px}
+/* quiz */
+.quiz-wrap{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:16px;align-items:start}
+.score{display:flex;align-items:center;gap:12px;background:var(--ink);color:#fff;border-radius:12px;padding:10px 16px;margin:10px 0 14px}
+.score .big{font-size:22px;font-weight:700;font-variant-numeric:tabular-nums}
+.score .bar{flex:1;height:8px;background:#3b4252;border-radius:99px;overflow:hidden}
+.score .bar i{display:block;height:100%;width:0;background:#f59e0b;transition:width .3s}
+.qcard{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:10px 14px 12px;margin:10px 0}
+.qcard.correct{border-color:#86d19c;box-shadow:inset 4px 0 0 var(--green)}
+.qcard.wrong{border-color:#f2a7b4;box-shadow:inset 4px 0 0 var(--red)}
+.qtop{display:flex;align-items:center;gap:10px}
+.qtop .qn{font-weight:800;color:var(--muted);min-width:28px}
+.qtop .qe{flex:1;overflow-x:auto}
+.opts{display:flex;flex-wrap:wrap;gap:5px;margin-top:6px}
+.opts button{font:inherit;font-size:13px;border:1px solid var(--line2);background:#fff;border-radius:999px;padding:2px 11px;cursor:pointer;color:var(--ink2)}
+.opts button:hover:not(:disabled){border-color:var(--ink)}
+.opts button.right{background:var(--green);border-color:var(--green);color:#fff}
+.opts button.bad{background:var(--red);border-color:var(--red);color:#fff}
+.opts button:disabled{cursor:default}
+.qans{display:none;margin-top:8px;font-size:14.5px;background:#f7f3ea;border-radius:10px;padding:8px 12px}
+.qans.show{display:block}
+.qans .btn{margin-top:6px}
+footer{margin-top:60px;color:var(--muted);font-size:13px;border-top:1px solid var(--line);padding-top:16px}
+.mobile-nav{display:none}
+@media (max-width:1100px){
+  .layout{grid-template-columns:1fr}
+  aside.toc{display:none}
+  .mobile-nav{display:flex;position:sticky;top:0;z-index:20;background:rgba(245,242,234,.96);backdrop-filter:blur(6px);border-bottom:1px solid var(--line);overflow-x:auto;gap:6px;padding:8px 12px}
+  .mobile-nav a{white-space:nowrap;font-size:13.5px;text-decoration:none;color:var(--ink2);border:1px solid var(--line2);border-radius:999px;padding:3px 11px;background:var(--paper)}
+  main{padding:18px 18px 100px}
+}
+@media (max-width:820px){
+  h1{font-size:32px}
+  .objectives,.two,.grid3{grid-template-columns:1fr}
+  .grid3{grid-template-columns:1fr 1fr}
+  .lab,.lab2d,.example .ex-b,.sum-wrap,.cls-out,.quiz-wrap{grid-template-columns:1fr}
+  .lab-controls,.example .steps,.cls-steps{border-right:none;border-bottom:1px solid var(--line)}
+  .lab2d .view{grid-template-columns:1fr}
+  .plot{height:380px}
+  .sticky{position:static}
+}
+</style>
+</head>
+<body>
+<nav class="mobile-nav" id="mnav"></nav>
+<div class="layout">
+<aside class="toc">
+  <div class="brand">พื้นผิวกำลังสอง</div>
+  <div class="sub">Quadric Surfaces · คณิตศาสตร์วิศวกรรม 2</div>
+  <ol id="toc">
+    <li><a href="#review"><span class="n">1</span>ทบทวนภาคตัดกรวย 2 มิติ</a></li>
+    <li><a href="#coords"><span class="n">2</span>ระบบพิกัด 3 มิติ</a></li>
+    <li><a href="#ellipsoid"><span class="n">3–4</span>ทรงกลมและทรงรี</a></li>
+    <li><a href="#paraboloid"><span class="n">5</span>พาราโบลอยด์</a></li>
+    <li><a href="#hyperboloid"><span class="n">6</span>ไฮเปอร์โบลอยด์</a></li>
+    <li><a href="#saddle"><span class="n">7</span>พื้นผิวอานม้า</a></li>
+    <li><a href="#cone"><span class="n">8</span>กรวย</a></li>
+    <li><a href="#cylinder"><span class="n">9</span>พื้นผิวทรงกระบอก</a></li>
+    <li><a href="#summary"><span class="n">10</span>ตารางสรุป</a></li>
+    <li><a href="#classifier"><span class="n">★</span>เครื่องมือจำแนกพื้นผิว</a></li>
+    <li><a href="#exercise"><span class="n">11</span>แบบฝึกหัด</a></li>
+  </ol>
+  <div class="tip"><b>วิธีใช้กราฟ 3 มิติ</b><br>ลากเมาส์/นิ้วเพื่อหมุน · ปุ่ม + / − เพื่อซูม · ⟲ กลับมุมมองเริ่มต้น<br>ทุกกราฟใช้ระบบมือขวา: x พุ่งเข้าหาผู้อ่าน, y ไปทางขวา, z ชี้ขึ้น</div>
+</aside>
+
+<main>
+<header class="hero">
+  <div class="kicker">Engineering Mathematics 2 · ชั้นปีที่ 1 ภาคเรียนที่ 2</div>
+  <h1>พื้นผิวกำลังสอง<small>Quadric Surfaces — บทเรียนแบบโต้ตอบ หมุน ปรับค่า และตัดดูได้จริง</small></h1>
+  <p class="lead">บทเรียนนี้เปลี่ยนรูปในเอกสารให้ “ขยับได้” ลองเลื่อนแถบปรับค่า a, b, c แล้วสังเกตว่าพื้นผิวเปลี่ยนอย่างไร เปิด <b>ระนาบตัด</b> เพื่อดูว่าภาคตัดของพื้นผิวคือวงรี พาราโบลา หรือไฮเปอร์โบลา และฝึกจำแนกชนิดของพื้นผิวจากสมการด้วยตัวเอง</p>
+  <div class="objectives">
+    <div class="obj"><b>จุดประสงค์ 1</b>จำแนกชนิดของพื้นผิวกำลังสองจากรูปแบบของสมการได้</div>
+    <div class="obj"><b>จุดประสงค์ 2</b>จัดสมการให้อยู่ในรูปมาตรฐาน และหาจุดศูนย์กลางเมื่อกราฟมีการเลื่อนได้</div>
+    <div class="obj"><b>จุดประสงค์ 3</b>ร่างกราฟพื้นผิวใน 3 มิติ รวมถึงกรณีที่มีรากที่สอง (กราฟเพียงครึ่งเดียว) ได้</div>
+  </div>
+  <div class="chips">
+    <a class="chip" href="#ellipsoid">ทรงกลม/ทรงรี</a><a class="chip" href="#paraboloid">พาราโบลอยด์</a><a class="chip" href="#hyperboloid">ไฮเปอร์โบลอยด์ 1 ผืน / 2 ผืน</a><a class="chip" href="#saddle">อานม้า</a><a class="chip" href="#cone">กรวย</a><a class="chip" href="#cylinder">ทรงกระบอก</a><a class="chip" href="#classifier">ลองใส่สมการเอง</a><a class="chip" href="#exercise">ทำแบบฝึกหัด</a>
+  </div>
+</header>
+
+<!-- ================= 1 ================= -->
+<section class="sec" id="review">
+  <div class="sec-h"><span class="num">1</span><h2>ทบทวน: ภาคตัดกรวยใน 2 มิติ<span class="en">Conic sections</span></h2></div>
+  <p class="lead">พื้นผิว 3 มิติทุกชนิดในบทนี้ “ประกอบ” ขึ้นจากเส้นโค้ง 2 มิติที่คุ้นเคย ถ้าเข้าใจวงกลม วงรี พาราโบลา และไฮเปอร์โบลาดี จะอ่านสมการ 3 มิติได้ทันที</p>
+
+  <h3>1.1 วงกลมและวงรี</h3>
+  <div class="two">
+    <div class="formula"><span class="ttl">สมการวงกลม</span><span class="mj">\[x^2+y^2=r^2\qquad (r>0)\]</span></div>
+    <div class="formula"><span class="ttl">สมการวงรี (รูปมาตรฐาน)</span><span class="mj">\[\frac{x^2}{a^2}+\frac{y^2}{b^2}=1\]</span></div>
+  </div>
+  <div class="callout note"><b class="h">ข้อสังเกต</b>
+    <ul>
+      <li>ใน \(\square\,x^2+\square\,y^2=r^2\) ถ้าสัมประสิทธิ์หน้า \(x^2\) และ \(y^2\) <b>เท่ากัน</b> → วงกลม เช่น \(3x^2+3y^2=5\)</li>
+      <li>ถ้าเป็นบวกทั้งคู่แต่ <b>ไม่เท่ากัน</b> → กราฟ “รี” เป็นวงรี เช่น \(3x^2+4y^2=5\) (ตัดแกน x ที่ \(\pm a\), แกน y ที่ \(\pm b\))</li>
+      <li>\(x^2+y^2=-4\) <b>ไม่มีกราฟ</b> เพราะผลบวกของกำลังสองของจำนวนจริงเป็นลบไม่ได้</li>
+    </ul>
+  </div>
+
+  <h3>ห้องทดลอง: สมการ \(A(x-h)^2+B(y-k)^2=G\)</h3>
+  <p>ปรับค่าสัมประสิทธิ์แล้วดูว่ากราฟเป็นอะไร เลือก “ครึ่ง” เพื่อดูว่ารากที่สองเครื่องหมาย + / − ให้กราฟส่วนไหน และเลื่อน h, k เพื่อย้ายจุดศูนย์กลาง</p>
+  <div class="lab2d" id="lab2d">
+    <div class="lab-controls">
+      <div class="lab-title">ปรับสมการ</div>
+      <label class="ctl"><span>A (สัมประสิทธิ์ของ x²)</span><input type="range" id="d2A" min="-5" max="5" step="0.5" value="3"><output></output></label>
+      <label class="ctl"><span>B (สัมประสิทธิ์ของ y²)</span><input type="range" id="d2B" min="-5" max="5" step="0.5" value="4"><output></output></label>
+      <label class="ctl"><span>G (ค่าคงที่ขวามือ)</span><input type="range" id="d2G" min="-10" max="10" step="1" value="5"><output></output></label>
+      <label class="ctl"><span>h (เลื่อนตามแกน x)</span><input type="range" id="d2h" min="-5" max="5" step="1" value="0"><output></output></label>
+      <label class="ctl"><span>k (เลื่อนตามแกน y)</span><input type="range" id="d2k" min="-5" max="5" step="1" value="0"><output></output></label>
+      <div class="seg-wrap"><span>แสดงเฉพาะ (จากรากที่สอง)</span><div class="seg" id="d2half">
+        <button data-v="all" class="on">ทั้งหมด</button><button data-v="up">ครึ่งบน</button><button data-v="down">ครึ่งล่าง</button><button data-v="right">ครึ่งขวา</button><button data-v="left">ครึ่งซ้าย</button></div></div>
+      <div class="subhead">โหลดตัวอย่างจากเอกสาร</div>
+      <div class="seg" style="margin-top:6px">
+        <button class="btn" data-pre="c4">x²+y²=4</button>
+        <button class="btn" data-pre="ex11">ตัวอย่าง 1.1</button>
+        <button class="btn" data-pre="ex12a">1.2 (ก)</button>
+        <button class="btn" data-pre="ex12b">1.2 (ข)</button>
+        <button class="btn" data-pre="neg">x²+y²=−4</button>
+        <button class="btn" data-pre="hyp">ไฮเปอร์โบลา</button>
+      </div>
+    </div>
+    <div class="view">
+      <div id="d2svg"></div>
+      <div class="out2d">
+        <div class="row"><div class="lbl">สมการ</div><div class="mjx" id="d2eq"></div></div>
+        <div class="row"><div class="lbl">ชนิดของกราฟ</div><div id="d2type"></div></div>
+        <div class="row"><div class="lbl">รูปมาตรฐาน</div><div class="mjx" id="d2std"></div></div>
+        <div class="row" id="d2halfrow"><div class="lbl">สมการของส่วนที่เลือก</div><div class="mjx" id="d2sq"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="example" id="ex11">
+    <div class="ex-h"><span class="tag">ตัวอย่าง 1.1</span><span class="q">จงจัดรูปและร่างกราฟของ \(3x^2+4y^2=5\)</span></div>
+    <div class="steps" style="border-right:none">
+      <div class="step show"><span class="sn">ขั้นที่ 1</span><br>หารด้วย 5 ทั้งสองข้าง ให้ขวามือเป็น 1 \[\tfrac35x^2+\tfrac45y^2=1\;\Longrightarrow\;\frac{x^2}{\left(\sqrt{5/3}\right)^2}+\frac{y^2}{\left(\sqrt{5/4}\right)^2}=1\]</div>
+      <div class="step show final"><span class="sn">สรุป</span><br>เป็นวงรีที่มี \(a=\sqrt{5/3}\approx1.29\) และ \(b=\sqrt{5/4}\approx1.12\) — กดปุ่ม “ตัวอย่าง 1.1” ในห้องทดลองด้านบนเพื่อดูกราฟ</div>
+    </div>
+  </div>
+
+  <h3>1.2 การแยกกราฟเป็นครึ่งบน–ล่าง และครึ่งซ้าย–ขวา</h3>
+  <p>เมื่อแก้สมการหาตัวแปรตัวใดตัวหนึ่ง จะได้รากที่สองซึ่งมีทั้งเครื่องหมาย + และ − <b>แต่ละเครื่องหมายแทนครึ่งหนึ่งของกราฟ</b> เช่น จาก \(x^2+y^2=4\)</p>
+  <div class="two">
+    <div class="card" style="margin:0">\(y=\sqrt{4-x^2}\) คือ <b>ครึ่งบน</b> \((y\ge0)\)<br>\(y=-\sqrt{4-x^2}\) คือ <b>ครึ่งล่าง</b> \((y\le0)\)</div>
+    <div class="card" style="margin:0">\(x=\sqrt{4-y^2}\) คือ <b>ครึ่งขวา</b> \((x\ge0)\)<br>\(x=-\sqrt{4-y^2}\) คือ <b>ครึ่งซ้าย</b> \((x\le0)\)</div>
+  </div>
+
+  <h3>1.3 กราฟที่มีการเลื่อน</h3>
+  <div class="formula"><span class="ttl">วงกลมจุดศูนย์กลาง (h, k)</span><span class="mj">\[(x-h)^2+(y-k)^2=r^2\]</span></div>
+  <p><b>แนวคิด:</b> ให้ \(\bar x=x-h\) และ \(\bar y=y-k\) จะได้ \(\bar x^2+\bar y^2=r^2\) ซึ่งเป็นวงกลมที่จุดกำเนิดของแกน \(\bar x\bar y\) จากนั้นย้ายจุดกำเนิดของแกนใหม่ไปไว้ที่ \((h,k)\) แล้ววาดรูปเดิมลงไป</p>
+  <div class="example" id="ex12">
+    <div class="ex-h"><span class="tag">ตัวอย่าง 1.2</span><span class="q">จงร่างกราฟของ (ก) \((x-3)^2+(y+4)^2=8\) &nbsp; (ข) \(x-3=-\sqrt{8-(y+4)^2}\)</span></div>
+    <div class="steps" style="border-right:none">
+      <div class="step show"><span class="sn">(ก)</span><br>ให้ \(\bar x=x-3,\ \bar y=y+4\) จะได้ \(\bar x^2+\bar y^2=8\) เป็นวงกลมรัศมี \(\sqrt8=2\sqrt2\) จุดศูนย์กลาง \((h,k)=(3,-4)\)</div>
+      <div class="step show"><span class="sn">(ข)</span><br>ยกกำลังสองทั้งสองข้าง โดยต้องจำเงื่อนไขว่าฝั่งขวาเป็นค่าลบ (หรือศูนย์) ดังนั้น \(x-3\le0\) \[(x-3)^2=8-(y+4)^2\;\Longrightarrow\;(x-3)^2+(y+4)^2=8\ ;\quad x\le3\]</div>
+      <div class="step show final"><span class="sn">สรุป</span><br>ในแกนใหม่คือ \(\bar x^2+\bar y^2=8;\ \bar x\le0\) จึงเป็น <b>ครึ่งวงกลมด้านซ้าย</b> ของวงกลมในข้อ (ก) — ลองกดปุ่ม “1.2 (ก)” และ “1.2 (ข)” ในห้องทดลอง</div>
+    </div>
+  </div>
+  <div class="callout warn"><b class="h">สำคัญ</b>ทุกครั้งที่ยกกำลังสองเพื่อกำจัดรากที่สอง ต้องเขียนเงื่อนไขเครื่องหมายกำกับไว้เสมอ เพราะ \(\sqrt{\cdot}\ge0\) เงื่อนไขนี้บอกว่ากราฟเหลือเพียงส่วนใด</div>
+
+  <h3>1.4 พาราโบลาและไฮเปอร์โบลา</h3>
+  <div class="grid3" id="gallery2d"></div>
+  <div class="two">
+    <div class="callout note"><b class="h">พาราโบลา</b><ul><li>มีตัวแปรยกกำลัง 1 และกำลัง 2 ปนกัน</li><li>แกนของพาราโบลาคือแกนของ <b>ตัวแปรกำลังหนึ่ง</b></li><li>พจน์กำลังสองเป็นบวก → เปิดไปด้านบวกของแกนกำลังหนึ่ง, เป็นลบ → เปิดไปด้านลบ</li></ul></div>
+    <div class="callout note"><b class="h">ไฮเปอร์โบลา</b><ul><li>จัดสมการให้ <b>ขวามือเป็นบวก</b> ก่อน (เช่น = 1)</li><li>กราฟ <b>ไม่ตัด</b> แกนของตัวแปรกำลังสองที่มีเครื่องหมายลบ</li><li>กราฟ <b>ตัด</b> แกนของตัวแปรที่มีเครื่องหมายบวก</li></ul></div>
+  </div>
+</section>
+
+<!-- ================= 2 ================= -->
+<section class="sec" id="coords">
+  <div class="sec-h"><span class="num">2</span><h2>ระบบพิกัด 3 มิติ: กฎมือขวา<span class="en">Right-handed system</span></h2></div>
+  <p class="lead">แกน x, y, z ต้องวางตาม <b>กฎมือขวา</b>: ให้นิ้วทั้งสี่ชี้ไปทางแกน x แล้วงอนิ้วเข้าหาแกน y นิ้วโป้งจะชี้ไปทางแกน z</p>
+  <div class="lab" id="lab-coord">
+    <div class="lab-controls">
+      <div class="lab-title">วางจุดใน 3 มิติ</div>
+      <label class="ctl"><span>x₀</span><input type="range" id="px" min="-4" max="4" step="0.5" value="3"><output></output></label>
+      <label class="ctl"><span>y₀</span><input type="range" id="py" min="-4" max="4" step="0.5" value="2"><output></output></label>
+      <label class="ctl"><span>z₀</span><input type="range" id="pz" min="-4" max="4" step="0.5" value="2.5"><output></output></label>
+      <div class="subhead">มุมมอง (ทั้งสองแบบเป็นระบบมือขวา)</div>
+      <div class="seg" style="margin-top:6px" id="camsel"><button data-v="a" class="on">แบบเอกสาร: x เข้าหาผู้อ่าน</button><button data-v="b">แบบที่ 2: z เข้าหาผู้อ่าน</button></div>
+      <p style="font-size:13.5px;color:var(--muted);margin-top:12px">เส้นประแสดงวิธีอ่านพิกัด: เดินตามแกน x ก่อน แล้วขนานแกน y จากนั้นขึ้น/ลงตามแกน z</p>
+    </div>
+    <div class="lab-view">
+      <div class="eqbox"><div class="eq" id="pcoord"></div></div>
+      <div class="plotwrap"><div class="plot" id="plot-coord"></div></div>
+    </div>
+  </div>
+  <div class="callout key"><b class="h">ข้อตกลงในบทเรียนนี้</b>ใช้มุมมองแบบเอกสารเป็นหลัก คือ x พุ่งเข้าหาผู้อ่าน, y ไปทางขวา, z ชี้ขึ้น — ภาพทั้งสองแบบเป็นระบบมือขวา เพียงมองจากมุมต่างกัน</div>
+</section>
+
+<!-- ================= 3-4 ================= -->
+<section class="sec" id="ellipsoid">
+  <div class="sec-h"><span class="num">3–4</span><h2>ทรงกลมและทรงรี<span class="en">Sphere &amp; Ellipsoid</span></h2></div>
+  <div class="two">
+    <div class="formula"><span class="ttl">ทรงกลม</span><span class="mj">\[(x-h)^2+(y-k)^2+(z-l)^2=r^2\]</span></div>
+    <div class="formula"><span class="ttl">ทรงรี</span><span class="mj">\[\frac{x^2}{a^2}+\frac{y^2}{b^2}+\frac{z^2}{c^2}=1\]</span></div>
+  </div>
+  <div class="callout note"><b class="h">ข้อสังเกต</b><ul>
+    <li>ทุกพจน์เป็นกำลังสองและ <b>เป็นบวกทั้งหมด</b> ค่าคงที่ทางขวามือต้องเป็นบวก</li>
+    <li>สัมประสิทธิ์ของ \(x^2,y^2,z^2\) <b>เท่ากัน</b> → ทรงกลม, <b>ไม่เท่ากัน</b> → ทรงรี (ตัดแกน x, y, z ที่ \(\pm a,\pm b,\pm c\))</li>
+    <li>ถ้า \(a=b=c\) ทรงรีจะกลายเป็นทรงกลม</li></ul></div>
+  <div id="lab-ell"></div>
+  <div class="callout key"><b class="h">ลองสังเกต</b>เปิดระนาบตัด z = k แล้วเลื่อน k: ภาคตัดเป็นวงรีที่เล็กลงเรื่อย ๆ จนเหลือ “จุด” เมื่อ k = ±c และ “ไม่มีกราฟ” เมื่อ |k| &gt; c</div>
+
+  <div class="example" data-ex="ex31">
+    <div class="ex-h"><span class="tag">ตัวอย่าง 3.1</span><span class="q">จงร่างกราฟของ \(y+2=-\sqrt{5-(x+3)^2-(z-1)^2}\)</span></div>
+    <div class="ex-b">
+      <div class="steps">
+        <div class="step"><span class="sn">ขั้นที่ 1 · เปลี่ยนตัวแปร</span><br>ให้ \(\bar x=x+3,\ \bar y=y+2,\ \bar z=z-1\) ดังนั้น \((h,k,l)=(-3,-2,1)\) และ \[\bar y=-\sqrt{5-\bar x^2-\bar z^2}\]</div>
+        <div class="step"><span class="sn">ขั้นที่ 2 · ยกกำลังสอง + เขียนเงื่อนไข</span><br>ฝั่งขวาเป็นค่าลบ จึงได้ \(\bar y\le0\) \[\begin{aligned}&\bar y^2=5-\bar x^2-\bar z^2\ ;\ \bar y\le0\\\Longrightarrow\ &\bar x^2+\bar y^2+\bar z^2=5\ ;\ \bar y\le0\end{aligned}\]</div>
+        <div class="step final"><span class="sn">สรุป</span><br><b>ครึ่งทรงกลม</b> รัศมี \(\sqrt5\) จุดศูนย์กลาง \((-3,-2,1)\) เฉพาะส่วนที่ \(y\le-2\) (ครึ่งที่หันไปทาง y ลบ)</div>
+        <div class="ex-ctrl"><button class="btn primary" data-next>ขั้นถัดไป ▸</button><button class="btn" data-all>แสดงทั้งหมด</button><button class="btn" data-reset>เริ่มใหม่</button></div>
+      </div>
+      <div class="ex-plot"><div class="plot"></div><div class="placeholder">กด “ขั้นถัดไป” จนถึงขั้นสรุป<br>เพื่อดูกราฟ 3 มิติ</div></div>
+    </div>
+  </div>
+
+  <div class="example" data-ex="ex41">
+    <div class="ex-h"><span class="tag">ตัวอย่าง 4.1</span><span class="q">จงร่างกราฟของ \(2(x-1)^2+3(y+2)^2+4(z-3)^2=6\)</span></div>
+    <div class="ex-b">
+      <div class="steps">
+        <div class="step"><span class="sn">ขั้นที่ 1 · เปลี่ยนตัวแปร</span><br>ให้ \(\bar x=x-1,\ \bar y=y+2,\ \bar z=z-3\) ได้ \((h,k,l)=(1,-2,3)\) และ \(2\bar x^2+3\bar y^2+4\bar z^2=6\)</div>
+        <div class="step"><span class="sn">ขั้นที่ 2 · หารด้วย 6 ให้ขวามือเป็น 1</span>\[\frac{\bar x^2}{3}+\frac{\bar y^2}{2}+\frac{\bar z^2}{3/2}=1\]</div>
+        <div class="step final"><span class="sn">สรุป</span><br>สัมประสิทธิ์ไม่เท่ากัน จึงเป็น <b>ทรงรี</b> จุดศูนย์กลาง \((1,-2,3)\) และ \(a=\sqrt3,\ b=\sqrt2,\ c=\sqrt{3/2}\)</div>
+        <div class="ex-ctrl"><button class="btn primary" data-next>ขั้นถัดไป ▸</button><button class="btn" data-all>แสดงทั้งหมด</button><button class="btn" data-reset>เริ่มใหม่</button></div>
+      </div>
+      <div class="ex-plot"><div class="plot"></div><div class="placeholder">กด “ขั้นถัดไป” จนถึงขั้นสรุป<br>เพื่อดูกราฟ 3 มิติ</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 5 ================= -->
+<section class="sec" id="paraboloid">
+  <div class="sec-h"><span class="num">5</span><h2>พาราโบลอยด์<span class="en">Elliptic Paraboloid</span></h2></div>
+  <p class="lead">ขยายแนวคิดจากพาราโบลาใน 2 มิติ — เหมือนนำพาราโบลามาหมุนรอบแกนของมัน</p>
+  <div class="formula"><span class="ttl">รูปแบบสมการ</span><span class="mj">\[\frac{x^2}{a^2}+\frac{y^2}{b^2}=cz\]</span></div>
+  <div class="callout note"><b class="h">ข้อสังเกต</b><ul>
+    <li>มีตัวแปรยกกำลัง 1 และกำลัง 2 ปนกัน (<b>กำลังสอง 2 ตัว, กำลังหนึ่ง 1 ตัว</b>) และพจน์กำลังสองมีเครื่องหมายเหมือนกัน</li>
+    <li>หัว (จุดยอด) อยู่ที่จุดกำเนิด และ <b>แกนของพาราโบลอยด์คือแกนของตัวแปรกำลังหนึ่ง</b></li>
+    <li>ตัวแปรกำลังหนึ่งมีเครื่องหมายบวก → เปิดไปทางด้านบวก, ลบ → เปิดไปทางด้านลบ</li></ul></div>
+  <div id="lab-par"></div>
+  <div class="example" data-ex="ex51">
+    <div class="ex-h"><span class="tag">ตัวอย่าง 5.1</span><span class="q">จงร่างกราฟของ \(x=-\sqrt{-3y-2z^2}\)</span></div>
+    <div class="ex-b">
+      <div class="steps">
+        <div class="step"><span class="sn">ขั้นที่ 1 · ยกกำลังสอง + เงื่อนไข</span><br>ฝั่งขวาไม่เป็นบวก จึงได้ \(x\le0\) \[\begin{aligned}&x^2=-3y-2z^2\ ;\ x\le0\\\Longrightarrow\ &x^2+2z^2=-3y\ ;\ x\le0\end{aligned}\]</div>
+        <div class="step"><span class="sn">ขั้นที่ 2 · จำแนกชนิด</span><br>กำลังสอง 2 ตัว (x, z) เครื่องหมายเหมือนกัน + กำลังหนึ่ง 1 ตัว (y) → <b>พาราโบลอยด์</b> แกนคือแกน y และ y มีเครื่องหมายลบ จึง <b>เปิดไปทาง y ลบ</b></div>
+        <div class="step final"><span class="sn">สรุป</span><br>พาราโบลอยด์เปิดไปทาง y ลบ แล้วตัดเอาเฉพาะครึ่งที่ \(x\le0\) (ครึ่งที่อยู่ด้านหลัง ห่างจากผู้มอง)</div>
+        <div class="ex-ctrl"><button class="btn primary" data-next>ขั้นถัดไป ▸</button><button class="btn" data-all>แสดงทั้งหมด</button><button class="btn" data-reset>เริ่มใหม่</button></div>
+      </div>
+      <div class="ex-plot"><div class="plot"></div><div class="placeholder">กด “ขั้นถัดไป” จนถึงขั้นสรุป<br>เพื่อดูกราฟ 3 มิติ</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 6 ================= -->
+<section class="sec" id="hyperboloid">
+  <div class="sec-h"><span class="num">6</span><h2>ไฮเปอร์โบลอยด์<span class="en">Hyperboloid</span></h2></div>
+  <div class="callout key"><b class="h">วิธีวาด</b>จัดสมการให้ <b>ขวามือเป็นบวก</b> ก่อน (รูป = 1) แล้ว <b>นับจำนวนพจน์ที่เป็นลบ</b> · กราฟไม่ตัดแกนของตัวแปรกำลังสองที่มีเครื่องหมายลบ (ใช้ข้อสังเกตนี้ได้เฉพาะเมื่อขวามือเป็นบวก)</div>
+  <div class="two">
+    <div class="card" style="margin:0"><b>6.1 ชนิด 1 ผืน (ลบ 1 พจน์)</b>\[\frac{x^2}{a^2}+\frac{y^2}{b^2}-\frac{z^2}{c^2}=1\]กราฟเป็น <b>ท่อคอด</b> ผืนเดียวต่อเนื่อง แกนของท่อคือแกนของตัวแปรที่เป็นลบ</div>
+    <div class="card" style="margin:0"><b>6.2 ชนิด 2 ผืน (ลบ 2 พจน์)</b>\[-\frac{x^2}{a^2}-\frac{y^2}{b^2}+\frac{z^2}{c^2}=1\]กราฟแยกเป็น <b>สองผืน</b> เปิดออกตามแกนของตัวแปรที่เป็นบวกเพียงตัวเดียว และไม่ตัดแกนของตัวแปรที่เป็นลบ</div>
+  </div>
+  <div id="lab-hyp"></div>
+  <div class="callout key"><b class="h">ลองสังเกต</b>ชนิด 1 ผืน: ตัดด้วยระนาบตั้งฉากกับแกนท่อได้วงรีเสมอ (เล็กสุดที่ “คอ”) · ชนิด 2 ผืน: ระนาบที่อยู่ระหว่างสองผืนตัดแล้ว “ไม่มีกราฟ”</div>
+  <div class="example" data-ex="ex61">
+    <div class="ex-h"><span class="tag">ตัวอย่าง 6.1</span><span class="q">จงร่างกราฟของ \(y=\sqrt{2z^2-3x^2-1}\)</span></div>
+    <div class="ex-b">
+      <div class="steps">
+        <div class="step"><span class="sn">ขั้นที่ 1 · ยกกำลังสอง + เงื่อนไข</span><br>ฝั่งขวาเป็นบวก จึงได้ \(y\ge0\) \[\begin{aligned}&y^2=2z^2-3x^2-1\ ;\ y\ge0\\\Longrightarrow\ &-3x^2-y^2+2z^2=1\ ;\ y\ge0\end{aligned}\]</div>
+        <div class="step"><span class="sn">ขั้นที่ 2 · นับพจน์ลบ</span><br>ขวามือ = 1 (บวก) มีพจน์ลบสองพจน์ (x และ y) → <b>ไฮเปอร์โบลอยด์ 2 ผืน</b> เปิดตามแกน z</div>
+        <div class="step final"><span class="sn">สรุป</span><br>ผ่าครึ่งด้วยระนาบ xz แล้วเก็บเฉพาะด้านขวา \((y\ge0)\)</div>
+        <div class="ex-ctrl"><button class="btn primary" data-next>ขั้นถัดไป ▸</button><button class="btn" data-all>แสดงทั้งหมด</button><button class="btn" data-reset>เริ่มใหม่</button></div>
+      </div>
+      <div class="ex-plot"><div class="plot"></div><div class="placeholder">กด “ขั้นถัดไป” จนถึงขั้นสรุป<br>เพื่อดูกราฟ 3 มิติ</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 7 ================= -->
+<section class="sec" id="saddle">
+  <div class="sec-h"><span class="num">7</span><h2>พื้นผิวอานม้า<span class="en">Hyperbolic Paraboloid</span></h2></div>
+  <p class="lead">พื้นผิวอานม้าเป็น <b>ลูกผสม</b> ระหว่างไฮเปอร์โบลากับพาราโบลอยด์</p>
+  <div class="two">
+    <div class="callout note" style="margin:0"><b class="h">ข้อสังเกต</b><ul>
+      <li>มีแกนกำลังสอง 2 แกน และแกนกำลังหนึ่ง 1 แกน ⇒ พฤติกรรมของ <b>พาราโบลา</b></li>
+      <li>พจน์กำลังสองทั้งสองมี <b>เครื่องหมายต่างกัน</b> ⇒ พฤติกรรมของ <b>ไฮเปอร์โบลา</b></li></ul>
+      \[\frac{y^2}{b^2}-\frac{x^2}{a^2}=cz\]</div>
+    <div class="callout key" style="margin:0"><b class="h">เทคนิคการวาด “คนขี่ม้า”</b><ol style="margin:4px 0;padding-left:20px">
+      <li>จัดสมการให้ขวามือ (พจน์กำลังหนึ่ง) เป็นบวก</li>
+      <li>คนขี่ม้านั่งทับ <b>แกนกำลังหนึ่ง</b> (ลำตัวตั้งตามแกนนั้น)</li>
+      <li>หันหน้าไปทาง <b>แกนกำลังสองที่เป็นบวก</b> — ทางนั้นอานโค้งขึ้น (หน้าอาน/ท้ายอาน) ส่วนแกนกำลังสองที่เป็นลบคือทิศที่ขาห้อยลงสองข้าง</li></ol></div>
+  </div>
+  <div id="lab-sad"></div>
+  <div class="callout key"><b class="h">ลองสังเกต</b>ตัดด้วยระนาบ z = k: ได้ไฮเปอร์โบลา (k ≠ 0) หรือเส้นตรงสองเส้นตัดกัน (k = 0) · ตัดด้วยระนาบ x = k หรือ y = k: ได้พาราโบลาที่คว่ำ/หงาย</div>
+</section>
+
+<!-- ================= 8 ================= -->
+<section class="sec" id="cone">
+  <div class="sec-h"><span class="num">8</span><h2>กรวย<span class="en">Cone</span></h2></div>
+  <div class="formula"><span class="ttl">สมการกรวย</span><span class="mj">\[\frac{x^2}{a^2}+\frac{y^2}{b^2}=\frac{z^2}{c^2},\qquad \frac{x^2}{a^2}+\frac{z^2}{c^2}=\frac{y^2}{b^2},\qquad \frac{y^2}{b^2}+\frac{z^2}{c^2}=\frac{x^2}{a^2}\]</span></div>
+  <div class="callout note"><b class="h">ข้อสังเกต</b><ol style="margin:4px 0;padding-left:20px">
+    <li>ทุกพจน์เป็นกำลังสอง และเป็นบวกทั้งหมดเมื่อจัดให้อยู่คนละข้างของเครื่องหมายเท่ากับ</li>
+    <li><b>ไม่มีค่าคงที่</b> (ตัวเลขที่ไม่มีตัวแปรกำกับ) เหลืออยู่</li>
+    <li>ฝั่งที่มีสองพจน์บอกระนาบที่ภาคตัดเป็นวงกลม/วงรี เช่น \(x^2,y^2\Rightarrow\) ระนาบ xy</li>
+    <li><b>แกนกรวยคือแกนของตัวแปรที่อยู่ฝั่งขวามือเพียงตัวเดียว</b> ยอดกรวยอยู่ที่จุดกำเนิด</li></ol></div>
+  <div id="lab-cone"></div>
+  <div class="callout key"><b class="h">เทียบกับไฮเปอร์โบลอยด์</b>กรวยคือ “เส้นแบ่ง” ระหว่างไฮเปอร์โบลอยด์ 1 ผืน (ขวามือ = +1) และ 2 ผืน (ขวามือ = −1) เมื่อค่าคงที่เป็น 0 ท่อคอดจะคอดจนเหลือจุดเดียว</div>
+</section>
+
+<!-- ================= 9 ================= -->
+<section class="sec" id="cylinder">
+  <div class="sec-h"><span class="num">9</span><h2>พื้นผิวทรงกระบอก<span class="en">Cylindrical Surface</span></h2></div>
+  <p class="lead"><b>นิยาม</b> พื้นผิวทรงกระบอกคือพื้นผิวที่เกิดจาก <b>สมการสองตัวแปร</b> ที่นำมาวาดใน 3 มิติ โดยยืดเส้นโค้งนั้นออกไปตามแกนของตัวแปรที่ <b>ไม่ปรากฏ</b> ในสมการ</p>
+  <div class="callout key"><b class="h">วิธีวาด</b>(1) วาดเส้นโค้งในระนาบของสองตัวแปรที่มีอยู่ &nbsp;→&nbsp; (2) ลากยืดออกขนานกับแกนที่ขาดหายไป — กด ▶ เพื่อดูการ “ยืด”</div>
+  <div id="lab-cyl"></div>
+</section>
+
+<!-- ================= 10 ================= -->
+<section class="sec" id="summary">
+  <div class="sec-h"><span class="num">10</span><h2>ตารางสรุปการจำแนกพื้นผิวกำลังสอง<span class="en">Summary</span></h2></div>
+  <p>คลิกที่แถวเพื่อดูรูปทรงในหน้าต่างด้านข้าง</p>
+  <div class="sum-wrap">
+    <table class="sum" id="sumtable">
+      <thead><tr><th>พื้นผิว</th><th>รูปมาตรฐาน</th><th>วิธีสังเกตจากสมการ</th></tr></thead>
+      <tbody></tbody>
+    </table>
+    <div class="viewer sticky"><div class="vh" id="sumeq"></div><div class="plotwrap"><div class="plot" id="plot-sum"></div></div><div class="vf" id="sumnote"></div></div>
+  </div>
+  <h3>ขั้นตอนทั่วไปในการร่างกราฟ</h3>
+  <ol class="proc">
+    <li>ถ้ามีรากที่สอง ให้ยกกำลังสองและ <b>เขียนเงื่อนไขเครื่องหมาย</b> ไว้</li>
+    <li>ถ้ามี \((x-h),(y-k),(z-l)\) ให้แทนด้วย \(\bar x,\bar y,\bar z\) แล้วจดจุดศูนย์กลาง \((h,k,l)\)</li>
+    <li>จัดรูปให้เป็นรูปมาตรฐาน แล้วใช้ตารางด้านบนจำแนกชนิด</li>
+    <li>วาดรูปที่จุดกำเนิดของแกนใหม่ ย้ายไปที่ \((h,k,l)\) แล้วตัดเฉพาะส่วนที่สอดคล้องกับเงื่อนไข</li>
+  </ol>
+</section>
+
+<!-- ================= classifier ================= -->
+<section class="sec" id="classifier">
+  <div class="sec-h"><span class="num">★</span><h2>เครื่องมือจำแนกพื้นผิว<span class="en">Try your own equation</span></h2></div>
+  <p class="lead">ใส่สัมประสิทธิ์ของสมการรูปทั่วไป ระบบจะ <b>ทำกำลังสองสมบูรณ์</b> หาจุดศูนย์กลาง จัดเป็นรูปมาตรฐาน บอกชนิด และวาดกราฟให้ — ใช้ตรวจคำตอบของตัวเองได้</p>
+  <div class="cls">
+    <div class="cls-in">
+      <div class="cls-eq">
+        <input id="cA" value="2"><span class="v">x²</span>+<input id="cB" value="3"><span class="v">y²</span>+<input id="cC" value="4"><span class="v">z²</span>+<input id="cD" value="-4"><span class="v">x</span>+<input id="cE" value="12"><span class="v">y</span>+<input id="cF" value="-24"><span class="v">z</span>=<input id="cG" value="-44">
+      </div>
+      <div class="cls-pre">ตัวอย่าง:
+        <button class="btn" data-c="2,3,4,-4,12,-24,-44">ตัวอย่าง 4.1 (กระจายแล้ว)</button>
+        <button class="btn" data-c="1,1,1,-2,4,-6,2">ทรงกลมเลื่อน</button>
+        <button class="btn" data-c="1,4,0,0,0,-1,0">z = x²+4y²</button>
+        <button class="btn" data-c="1,-1,1,0,0,0,1">x²−y²+z²=1</button>
+        <button class="btn" data-c="-3,-1,2,0,0,0,1">−3x²−y²+2z²=1</button>
+        <button class="btn" data-c="1,-1,0,0,0,-4,0">4z = x²−y²</button>
+        <button class="btn" data-c="1,1,-1,-2,4,0,-5">กรวยเลื่อน</button>
+        <button class="btn" data-c="0,1,1,0,0,0,9">y²+z²=9</button>
+        <button class="btn" data-c="9,4,36,18,-16,0,11">แบบฝึกหัดข้อ 12 (กระจายแล้ว)</button>
+      </div>
+    </div>
+    <div class="cls-out">
+      <div class="cls-steps" id="clsSteps"></div>
+      <div><div class="plotwrap"><div class="plot" id="plot-cls"></div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 11 ================= -->
+<section class="sec" id="exercise">
+  <div class="sec-h"><span class="num">11</span><h2>แบบฝึกหัด<span class="en">Exercises</span></h2></div>
+  <p class="lead">จงระบุชนิดของพื้นผิว — เลือกคำตอบก่อน แล้วกด “ดูกราฟ” เพื่อตรวจกับรูป 3 มิติ (ลองร่างลงกระดาษก่อนดูเฉลย!)</p>
+  <div class="score"><span>คะแนน</span><span class="big" id="qscore">0 / 12</span><span class="bar"><i id="qbar"></i></span><button class="btn" id="qreset" style="background:#fff">เริ่มใหม่</button></div>
+  <div class="quiz-wrap">
+    <div id="qlist"></div>
+    <div class="viewer sticky"><div class="vh" id="qeq"><span style="color:var(--muted);font-size:14.5px">เลือกตอบข้อใดก็ได้ แล้วกด “ดูกราฟ”</span></div><div class="plotwrap"><div class="plot" id="plot-quiz"></div></div><div class="vf" id="qnote"></div></div>
+  </div>
+  <footer>เรียบเรียงจากเอกสารประกอบการสอน “พื้นผิวกำลังสอง (Quadric Surfaces)” วิชาคณิตศาสตร์วิศวกรรม 2 · กราฟ 3 มิติวาดด้วย Plotly.js · สมการแสดงด้วย MathJax</footer>
+</section>
+</main>
+</div>
+
+<script>
+(function(){
+'use strict';
+const PI=Math.PI, AX=['x','y','z'];
+const $=(s,r=document)=>r.querySelector(s), $$=(s,r=document)=>[...r.querySelectorAll(s)];
+const near=(a,b,e=1e-6)=>Math.abs(a-b)<e;
+const fmt=n=>{const r=Math.round(n*100)/100;return (Object.is(r,-0)||r===0?0:r).toString();};
+const clone=o=>JSON.parse(JSON.stringify(o));
+const TH={sphere:'ทรงกลม',ellipsoid:'ทรงรี',parab:'พาราโบลอยด์',hyp1:'ไฮเปอร์โบลอยด์ 1 ผืน',hyp2:'ไฮเปอร์โบลอยด์ 2 ผืน',saddle:'พื้นผิวอานม้า',cone:'กรวย',cyl:'ทรงกระบอก'};
+const PAL={
+  ellipsoid:[[0,'#0f766e'],[1,'#99f6e4']], parab:[[0,'#b45309'],[1,'#fde68a']],
+  hyp1:[[0,'#5b21b6'],[1,'#ddd6fe']], hyp2:[[0,'#5b21b6'],[1,'#ddd6fe']],
+  saddle:[[0,'#be123c'],[1,'#fecdd3']], cone:[[0,'#1d4ed8'],[1,'#bfdbfe']], cyl:[[0,'#15803d'],[1,'#bbf7d0']]
+};
+const AXC={x:'#d1495b',y:'#2a9d8f',z:'#3a6ea5'};
+
+/* ---------- MathJax ---------- */
+let mjChain=Promise.resolve();
+function typesetEl(el){
+  if(!window.__mjReady||!window.MathJax||!MathJax.typesetPromise){window.__texQ.push(el);return;}
+  mjChain=mjChain.then(()=>{try{MathJax.typesetClear([el]);}catch(e){} return MathJax.typesetPromise([el]);}).catch(()=>{});
+}
+window.typesetEl=typesetEl;
+function tex(el,latex,display=true){ if(!el)return; el.innerHTML=display?('\\['+latex+'\\]'):('\\('+latex+'\\)'); typesetEl(el); }
+function html(el,h){ if(!el)return; el.innerHTML=h; if(/\\\(|\\\[/.test(h)) typesetEl(el); }
+
+/* ---------- latex helpers ---------- */
+function shiftLbl(v,h){ if(Math.abs(h)<1e-9) return v; return h>0?`(${v}-${fmt(h)})`:`(${v}+${fmt(-h)})`; }
+function sqL(v,h){ return Math.abs(h)<1e-9?`${v}^2`:`${shiftLbl(v,h)}^2`; }
+function denL(s){ const s2=s*s, r=Math.round(s*100)/100; if(Math.abs(r*r-s2)<1e-6) return near(r,1)?null:`${fmt(r)}^2`; return fmt(s2); }
+function fracL(v,h,s){ const d=denL(s); return d?String.raw`\frac{${sqL(v,h)}}{${d}}`:sqL(v,h); }
+function coefL(c){ return near(c,1)?'':fmt(c); }
+function qTermL(q,lbl){ // |q| * lbl^2  (q>0)
+  if(near(q,1)) return lbl; const d=1/q;
+  if(Math.abs(d-Math.round(d*100)/100)<1e-6) return String.raw`\frac{${lbl}}{${fmt(d)}}`;
+  return fmt(q)+lbl;
+}
+function joinTerms(arr){ // arr of {s:+1/-1, t:'latex'}
+  if(!arr.length) return '0';
+  return arr.map((o,i)=> (o.s<0?'-':(i?'+':''))+o.t).join('');
+}
+
+/* ---------- geometry ---------- */
+function localOrder(axis){ return axis==='z'?['x','y']:axis==='y'?['x','z']:['y','z']; }
+function specE(S){ if(S.L) return S.L; if(S.type==='ellipsoid') return Math.max(S.a,S.b,S.c)*1.25; return 4; }
+
+function buildMeshes(S){
+  const C=S.center||{x:0,y:0,z:0}, L=specE(S), N=S.N||46;
+  const s={x:S.a,y:S.b,z:S.c}, axis=S.axis||'z';
+  let [pv,qv]=localOrder(axis);
+  if(S.type==='saddle'){ qv=S.up; pv=AX.find(t=>t!==axis&&t!==S.up); }
+  const A=s[pv],B=s[qv],Cc=s[axis];
+  let th=[0,2*PI], rc=0;
+  if(S.clip){ if(S.clip.v===pv) th=S.clip.s>0?[-PI/2,PI/2]:[PI/2,3*PI/2]; else if(S.clip.v===qv) th=S.clip.s>0?[0,PI]:[PI,2*PI]; else rc=S.clip.s; }
+  const put=(p,q,r)=>{const o={};o[pv]=p+C[pv];o[qv]=q+C[qv];o[axis]=r+C[axis];return o;};
+  const grid=(u0,u1,v0,v1,f,nu=N,nv=N)=>{
+    const X=[],Y=[],Z=[];
+    for(let i=0;i<nu;i++){const u=u0+(u1-u0)*i/(nu-1);const rx=[],ry=[],rz=[];
+      for(let j=0;j<nv;j++){const v=v0+(v1-v0)*j/(nv-1);const P=f(u,v);
+        if(!P){rx.push(null);ry.push(null);rz.push(null);} else {rx.push(P.x);ry.push(P.y);rz.push(P.z);} }
+      X.push(rx);Y.push(ry);Z.push(rz);}
+    return {x:X,y:Y,z:Z};
+  };
+  const ch=Math.cosh, sh=Math.sinh, cs=Math.cos, sn=Math.sin;
+  switch(S.type){
+    case 'ellipsoid':{ const ph=rc>0?[0,PI/2]:rc<0?[PI/2,PI]:[0,PI];
+      return [grid(ph[0],ph[1],th[0],th[1],(f,t)=>put(A*sn(f)*cs(t),B*sn(f)*sn(t),Cc*cs(f)))]; }
+    case 'hyp1':{ let U=Math.asinh(L/Cc); U=Math.min(U,Math.acosh(Math.max(1.05,L*1.35/Math.max(A,B))));
+      const ur=rc>0?[0,U]:rc<0?[-U,0]:[-U,U];
+      return [grid(ur[0],ur[1],th[0],th[1],(u,t)=>put(A*ch(u)*cs(t),B*ch(u)*sn(t),Cc*sh(u)))]; }
+    case 'hyp2':{ let U=Math.acosh(Math.max(1.05,L/Cc)); U=Math.min(U,Math.asinh(L*1.35/Math.max(A,B))); U=Math.max(U,0.3);
+      const sheets=rc>0?[1]:rc<0?[-1]:[1,-1];
+      return sheets.map(sg=>grid(0,U,th[0],th[1],(u,t)=>put(A*sh(u)*cs(t),B*sh(u)*sn(t),sg*Cc*ch(u)))); }
+    case 'cone':{ const T=Math.min(L/Cc,L/Math.max(A,B)); const tr=rc>0?[0,T]:rc<0?[-T,0]:[-T,T];
+      return [grid(tr[0],tr[1],th[0],th[1],(t,w)=>put(A*t*cs(w),B*t*sn(w),Cc*t))]; }
+    case 'parab':{ const R=Math.min(Math.sqrt(L*Cc),L/A,L/B);
+      return [grid(0,R,th[0],th[1],(r,t)=>put(A*r*cs(t),B*r*sn(t),S.dir*r*r/Cc))]; }
+    case 'saddle':{ const Pm=Math.min(L,A*Math.sqrt(L*Cc)), Qm=Math.min(L,B*Math.sqrt(L*Cc));
+      return [grid(-Pm,Pm,-Qm,Qm,(p,q)=>put(p,q,(q*q/(B*B)-p*p/(A*A))/Cc),40,40)]; }
+    case 'cyl':{ const ext=Math.max(0.01,S.ext==null?1:S.ext);
+      return S.curve.map(sg=>grid(sg.s0,sg.s1,-L*ext,L*ext,(u,r)=>{const o=Object.assign({x:0,y:0,z:0},sg.f(u));o[axis]=r;return {x:o.x+C.x,y:o.y+C.y,z:o.z+C.z};},sg.n||90,2)); }
+  }
+  return [];
+}
+
+function coeffs(S){
+  const s={x:S.a,y:S.b,z:S.c}, q={x:0,y:0,z:0}, l={x:0,y:0,z:0}; let G=0; const ax=S.axis||'z';
+  switch(S.type){
+    case 'ellipsoid': AX.forEach(v=>q[v]=1/(s[v]*s[v])); G=1; break;
+    case 'hyp1': AX.forEach(v=>q[v]=(v===ax?-1:1)/(s[v]*s[v])); G=1; break;
+    case 'hyp2': AX.forEach(v=>q[v]=(v===ax?1:-1)/(s[v]*s[v])); G=1; break;
+    case 'cone': AX.forEach(v=>q[v]=(v===ax?-1:1)/(s[v]*s[v])); G=0; break;
+    case 'parab': AX.forEach(v=>{ if(v!==ax) q[v]=1/(s[v]*s[v]); }); l[ax]=-S.dir*s[ax]; break;
+    case 'saddle':{ const dn=AX.find(t=>t!==ax&&t!==S.up); q[S.up]=1/(s[S.up]**2); q[dn]=-1/(s[dn]**2); l[ax]=-s[ax]; break; }
+    case 'cyl': return S.coeffs?{q:Object.assign({x:0,y:0,z:0},S.coeffs.q),l:Object.assign({x:0,y:0,z:0},S.coeffs.l||{}),G:S.coeffs.G}:null;
+  }
+  return {q,l,G};
+}
+
+function eqLatex(S){
+  const C=S.center||{x:0,y:0,z:0}, s={x:S.a,y:S.b,z:S.c}, ax=S.axis||'z';
+  const F=v=>fracL(v,C[v],s[v]);
+  switch(S.type){
+    case 'ellipsoid':
+      if(near(S.a,S.b)&&near(S.b,S.c)) return `${sqL('x',C.x)}+${sqL('y',C.y)}+${sqL('z',C.z)}=${denL(S.a)||'1'}`;
+      return `${F('x')}+${F('y')}+${F('z')}=1`;
+    case 'hyp1': case 'hyp2':{
+      const neg=S.type==='hyp1'?[ax]:AX.filter(v=>v!==ax);
+      return joinTerms(AX.map(v=>({s:neg.includes(v)?-1:1,t:F(v)})))+'=1'; }
+    case 'cone':{ const [p,q]=localOrder(ax); return `${F(p)}+${F(q)}=${F(ax)}`; }
+    case 'parab':{ const [p,q]=localOrder(ax); return `${F(p)}+${F(q)}=${S.dir<0?'-':''}${coefL(s[ax])}${shiftLbl(ax,C[ax])}`; }
+    case 'saddle':{ const dn=AX.find(t=>t!==ax&&t!==S.up); return `${F(S.up)}-${F(dn)}=${coefL(s[ax])}${shiftLbl(ax,C[ax])}`; }
+    case 'cyl': return S.latex;
+  }
+}
+
+/* trace (cross-section) of a quadric with plane v=k */
+function traceInfo(S,v,k){
+  const co=coeffs(S);
+  const plane=`ระนาบ \\(${v}=${fmt(k)}\\)`;
+  if(!co) return `${plane}: สมการนี้ไม่ใช่สมการกำลังสอง ภาคตัดคือเส้นโค้งเดิมที่ถูกเลื่อนไปตามแกน`;
+  const C=S.center||{x:0,y:0,z:0}, K=k-C[v];
+  const [u,w]=AX.filter(t=>t!==v);
+  const G2=co.G-co.q[v]*K*K-co.l[v]*K;
+  const qu=co.q[u],qw=co.q[w],lu=co.l[u],lw=co.l[w], e=1e-9;
+  const lhs=[], rhs=[];
+  [u,w].forEach(t=>{ const q=co.q[t]; if(Math.abs(q)>e) lhs.push({s:Math.sign(q),t:qTermL(Math.abs(q),sqL(t,C[t]))}); });
+  [u,w].forEach(t=>{ const L=-co.l[t]; if(Math.abs(L)>e) rhs.push({s:Math.sign(L),t:coefL(Math.abs(L))+shiftLbl(t,C[t])}); });
+  if(Math.abs(G2)>e||!rhs.length) rhs.push({s:G2<0?-1:1,t:fmt(Math.abs(G2))});
+  if(Math.abs(G2)<e && rhs.length>1) rhs.pop();
+  let latex=`${joinTerms(lhs)}=${joinTerms(rhs)}`.replace(/=\+/,'=');
+  let name='';
+  const nq=(Math.abs(qu)>e)+(Math.abs(qw)>e);
+  if(nq===2){
+    if(Math.abs(G2)<1e-7) name=(qu*qw>0)?'จุดเดียว (ระนาบสัมผัสพื้นผิวพอดี)':'เส้นตรงสองเส้นตัดกัน';
+    else { const a=qu/G2,b=qw/G2;
+      if(a>0&&b>0) name=near(a,b,1e-6)?`วงกลม รัศมี ${fmt(Math.sqrt(1/a))}`:`วงรี (ครึ่งแกน ${fmt(Math.sqrt(1/a))} และ ${fmt(Math.sqrt(1/b))})`;
+      else if(a<0&&b<0) name='ไม่มีกราฟ — ระนาบไม่ตัดพื้นผิว';
+      else name='ไฮเปอร์โบลา'; }
+  } else if(nq===1){
+    const tq=Math.abs(qu)>e?u:w, tl=tq===u?w:u, ql=co.q[tq];
+    if(Math.abs(co.l[tl])>e) name='พาราโบลา';
+    else { const r=G2/ql; name=r>1e-9?'เส้นตรงขนานกันสองเส้น':Math.abs(r)<1e-9?'เส้นตรงเส้นเดียว':'ไม่มีกราฟ'; }
+  } else name=(Math.abs(lu)>e||Math.abs(lw)>e)?'เส้นตรง':(Math.abs(G2)<e?'ทั้งระนาบ':'ไม่มีกราฟ');
+  return `${plane} → \\(${latex}\\) &nbsp;⇒&nbsp; <span class="tn">${name}</span>`;
+}
+
+/* ---------- plotly figure builders ---------- */
+function rangesFor(center,E){
+  const c=center||{x:0,y:0,z:0}, lo={}, hi={};
+  AX.forEach(v=>{lo[v]=Math.min(-1.5,c[v]-E);hi[v]=Math.max(1.5,c[v]+E);});
+  const span=Math.max(...AX.map(v=>hi[v]-lo[v]))*1.1, R={};
+  AX.forEach(v=>{const m=(lo[v]+hi[v])/2;R[v]=[m-span/2,m+span/2];});
+  return R;
+}
+function symR(L){return {x:[-L,L],y:[-L,L],z:[-L,L]};}
+function axesTraces(R){
+  const out=[], span=Math.max(...AX.map(v=>R[v][1]-R[v][0]));
+  AX.forEach(v=>{
+    const lo=R[v][0], hi=R[v][1]-span*0.02;
+    const P=t=>({x:v==='x'?t:0,y:v==='y'?t:0,z:v==='z'?t:0});
+    const a=P(lo), b=P(hi), tl=P(hi+span*0.035);
+    out.push({type:'scatter3d',mode:'lines',x:[a.x,b.x],y:[a.y,b.y],z:[a.z,b.z],line:{color:AXC[v],width:5},hoverinfo:'skip',showlegend:false});
+    out.push({type:'cone',x:[b.x],y:[b.y],z:[b.z],u:[v==='x'?1:0],v:[v==='y'?1:0],w:[v==='z'?1:0],anchor:'tip',sizemode:'absolute',sizeref:span*0.055,colorscale:[[0,AXC[v]],[1,AXC[v]]],showscale:false,hoverinfo:'skip'});
+    out.push({type:'scatter3d',mode:'text',x:[tl.x],y:[tl.y],z:[tl.z],text:[v],textfont:{size:18,color:AXC[v],family:'Times New Roman'},hoverinfo:'skip',showlegend:false});
+  });
+  return out;
+}
+const NOHL={x:{highlight:false},y:{highlight:false},z:{highlight:false}};
+function surfTraces(S,opt={}){
+  return buildMeshes(S).map(m=>({type:'surface',x:m.x,y:m.y,z:m.z,colorscale:opt.colorscale||PAL[S.type]||PAL.ellipsoid,showscale:false,
+    opacity:opt.opacity==null?0.93:opt.opacity,hoverinfo:'skip',
+    lighting:{ambient:0.58,diffuse:0.75,specular:0.18,roughness:0.55,fresnel:0.15},
+    contours:opt.contours||NOHL}));
+}
+function planeTrace(v,k,R){
+  const [u,w]=AX.filter(t=>t!==v), U=R[u], W=R[w], M={};
+  M[u]=[[U[0],U[1]],[U[0],U[1]]]; M[w]=[[W[0],W[0]],[W[1],W[1]]]; M[v]=[[k,k],[k,k]];
+  return {type:'surface',x:M.x,y:M.y,z:M.z,opacity:0.2,showscale:false,colorscale:[[0,'#f97316'],[1,'#f97316']],hoverinfo:'skip',contours:NOHL};
+}
+function traceCurve(S,v,k){
+  const X=[],Y=[],Z=[];
+  buildMeshes(S).forEach(m=>{ const A=m[v], n=A.length;
+    const add=(i,j,i2,j2)=>{ const a=A[i][j], b=A[i2][j2]; if(a==null||b==null) return; const fa=a-k, fb=b-k; if(fa===0&&fb===0) return; if(fa*fb>0) return; const t=fa/(fa-fb);
+      X.push(m.x[i][j]+(m.x[i2][j2]-m.x[i][j])*t); Y.push(m.y[i][j]+(m.y[i2][j2]-m.y[i][j])*t); Z.push(m.z[i][j]+(m.z[i2][j2]-m.z[i][j])*t); };
+    for(let i=0;i<n;i++) for(let j=0;j<A[i].length;j++){ if(i+1<n) add(i,j,i+1,j); if(j+1<A[i].length) add(i,j,i,j+1); } });
+  return {type:'scatter3d',mode:'markers',x:X,y:Y,z:Z,marker:{size:3.2,color:'#e11d48'},hoverinfo:'skip',showlegend:false};
+}
+function contourFor(v,k){ const c=clone(NOHL); c[v]={show:true,start:k,end:k+0.5,size:1,color:'#e11d48',width:10,highlight:false}; return c; }
+function centerMarker(C){
+  if(!C||AX.every(v=>Math.abs(C[v])<1e-9)) return [];
+  return [{type:'scatter3d',mode:'markers+text',x:[C.x],y:[C.y],z:[C.z],marker:{size:4,color:'#111'},text:[`(${fmt(C.x)}, ${fmt(C.y)}, ${fmt(C.z)})`],textposition:'top center',textfont:{size:13,color:'#111'},hoverinfo:'skip',showlegend:false}];
+}
+function layout3d(R){
+  const ax=r=>({range:r,showgrid:true,gridcolor:'#ebe5d8',zeroline:false,showbackground:false,showspikes:false,title:{text:''},tickfont:{size:10,color:'#a39d8f'},showline:false});
+  return {margin:{l:0,r:0,t:0,b:0},paper_bgcolor:'rgba(0,0,0,0)',showlegend:false,
+    scene:{xaxis:ax(R.x),yaxis:ax(R.y),zaxis:ax(R.z),aspectmode:'cube',dragmode:'turntable'}};
+}
+function figSpec(S,opt={}){
+  const R=opt.R||rangesFor(S.center,specE(S));
+  let data=axesTraces(R);
+  if(S.clip){ const full=Object.assign({},S); delete full.clip; data=data.concat(surfTraces(full,{opacity:0.13,colorscale:[[0,'#8a8578'],[1,'#c9c3b4']]})); }
+  const pl=opt.plane;
+  data=data.concat(surfTraces(S,{contours:pl?contourFor(pl.v,pl.k):undefined}));
+  if(pl){ data.push(planeTrace(pl.v,pl.k,R)); data.push(traceCurve(S,pl.v,pl.k)); }
+  data=data.concat(centerMarker(S.center)).concat(opt.extra||[]);
+  return {data,layout:layout3d(R)};
+}
+
+/* ---------- managed plots (lazy WebGL) ---------- */
+const CAM_A={eye:{x:1.85,y:0.8,z:0.72},up:{x:0,y:0,z:1},center:{x:0,y:0,z:-0.05}};
+const CAM_B={eye:{x:0.75,y:0.65,z:1.85},up:{x:0,y:1,z:0},center:{x:0,y:0,z:0}};
+const CFG={displayModeBar:false,responsive:true,scrollZoom:false};
+const registry=new Map();
+const io=new IntersectionObserver(entries=>{
+  entries.forEach(en=>{const st=registry.get(en.target); if(!st) return;
+    if(en.isIntersecting){ st.visible=true; st.draw(); }
+    else { st.visible=false; if(st.drawn){ try{Plotly.purge(st.el);}catch(e){} st.drawn=false; st.bound=false; } }
+  });
+},{rootMargin:'250px 0px'});
+function managed(el,getFig,cam){
+  const wrap=el.parentNode;
+  const tools=document.createElement('div'); tools.className='ptools';
+  tools.innerHTML='<button data-z="in" title="ซูมเข้า">+</button><button data-z="out" title="ซูมออก">−</button><button data-z="reset" title="มุมมองเริ่มต้น">⟲</button>';
+  wrap.appendChild(tools);
+  const hint=document.createElement('div'); hint.className='hint'; hint.textContent='ลากเพื่อหมุน'; wrap.appendChild(hint);
+  const st={el,getFig,visible:false,drawn:false,bound:false,cam0:clone(cam||CAM_A)}; st.camera=clone(st.cam0);
+  st.draw=()=>{ if(!st.visible||typeof Plotly==='undefined') return; const f=getFig(); if(!f) return;
+    f.layout.scene.camera=st.camera;
+    Plotly.react(el,f.data,f.layout,CFG).then(()=>{ if(!st.bound){ el.on('plotly_relayout',e=>{ if(e&&e['scene.camera']) st.camera=e['scene.camera']; }); st.bound=true; } });
+    st.drawn=true; };
+  st.setCamera=c=>{ st.camera=clone(c); if(st.drawn) Plotly.relayout(el,{'scene.camera':st.camera}); };
+  tools.addEventListener('click',e=>{const b=e.target.closest('button'); if(!b) return; const z=b.dataset.z;
+    if(z==='reset') return st.setCamera(st.cam0);
+    const c=clone(st.camera), f=z==='in'?0.8:1.25; ['x','y','z'].forEach(a=>c.eye[a]*=f); st.setCamera(c); });
+  registry.set(el,st); io.observe(el);
+  return st;
+}
+
+/* ---------- generic lab ---------- */
+function ctlHTML(c){
+  if(c.type==='seg') return `<div class="seg-wrap"><span>${c.label}</span><div class="seg" data-id="${c.id}">${c.options.map(o=>`<button data-v="${o[0]}" class="${o[0]==c.val?'on':''}">${o[1]}</button>`).join('')}</div></div>`;
+  if(c.type==='check') return `<label class="chk"><input type="checkbox" data-id="${c.id}" ${c.val?'checked':''}>${c.label}</label>`;
+  if(c.type==='head') return `<div class="subhead">${c.label}</div>`;
+  if(c.type==='html') return c.html;
+  return `<label class="ctl" data-wrap="${c.id}"><span>${c.label}</span><input type="range" data-id="${c.id}" min="${c.min}" max="${c.max}" step="${c.step}" value="${c.val}"><output></output></label>`;
+}
+function makeLab(cfg){
+  const root=$(cfg.el); root.className='lab';
+  const ctrls=cfg.controls.slice();
+  if(cfg.trace){ ctrls.push({type:'head',label:'ภาคตัด (Trace) — ตัดพื้นผิวด้วยระนาบ'});
+    ctrls.push({type:'seg',id:'tp',label:'ระนาบตัด',options:[['none','ไม่แสดง'],['x','x = k'],['y','y = k'],['z','z = k']],val:cfg.trace.plane});
+    ctrls.push({id:'tk',label:'ค่า k',min:cfg.trace.min,max:cfg.trace.max,step:0.25,val:cfg.trace.k}); }
+  root.innerHTML=`<div class="lab-controls"><div class="lab-title">${cfg.title||'ปรับค่า'}</div>${ctrls.map(ctlHTML).join('')}</div>
+   <div class="lab-view"><div class="eqbox"><div class="eq"></div><span class="badge"></span></div>
+   <div class="plotwrap"><div class="plot"></div></div><div class="trace-out"></div><div class="lab-info"></div></div>`;
+  const P={}; let res=null;
+  const read=()=>{
+    $$('input[type=range]',root).forEach(i=>{P[i.dataset.id]=parseFloat(i.value); i.nextElementSibling.textContent=fmt(parseFloat(i.value));});
+    $$('input[type=checkbox]',root).forEach(i=>P[i.dataset.id]=i.checked);
+    $$('.seg[data-id]',root).forEach(s=>{const on=$('button.on',s); P[s.dataset.id]=on?on.dataset.v:null;});
+  };
+  const lab={root,P,set(id,v){const s=$(`.seg[data-id="${id}"]`,root); if(s){$$('button',s).forEach(b=>b.classList.toggle('on',b.dataset.v==v));} const i=$(`input[data-id="${id}"]`,root); if(i){ if(i.type==='checkbox') i.checked=v; else i.value=v;} }};
+  const eqEl=$('.eq',root), badge=$('.badge',root), trOut=$('.trace-out',root), info=$('.lab-info',root);
+  let lastEq='', raf=0;
+  const update=()=>{
+    read(); res=cfg.build(P,lab); read();
+    const eq=res.latex||eqLatex(res.spec); if(eq!==lastEq){ tex(eqEl,eq); lastEq=eq; }
+    badge.textContent=res.badge||TH[res.spec.type]; badge.style.background=(PAL[res.spec.type]||PAL.ellipsoid)[0][1];
+    if(cfg.trace&&P.tp&&P.tp!=='none') html(trOut,traceInfo(res.spec,P.tp,P.tk)); else trOut.innerHTML='';
+    $$('[data-wrap="tk"]',root).forEach(w=>w.classList.toggle('disabled',!P.tp||P.tp==='none'));
+    html(info,res.info||'');
+    if(cfg.after) cfg.after(P,res,lab);
+    st.draw();
+  };
+  const st=managed($('.plot',root),()=>{ if(!res) return null;
+    const pl=(cfg.trace&&P.tp&&P.tp!=='none')?{v:P.tp,k:P.tk}:null;
+    return figSpec(res.spec,{R:cfg.R?symR(cfg.R):undefined,plane:pl,extra:res.extra}); });
+  const sched=()=>{cancelAnimationFrame(raf);raf=requestAnimationFrame(update);};
+  root.addEventListener('input',sched);
+  root.addEventListener('click',e=>{const b=e.target.closest('.seg[data-id] button'); if(!b) return; $$('button',b.parentNode).forEach(x=>x.classList.toggle('on',x===b)); sched();});
+  lab.update=update; lab.sched=sched;
+  update();
+  return lab;
+}
+function axisSeg(id,label,val){ return {type:'seg',id,label,options:[['x','แกน x'],['y','แกน y'],['z','แกน z']],val}; }
+function abc(vals,suffix){ return ['a','b','c'].map((k,i)=>({id:k,label:`${k} (คู่กับ ${AX[i]})${suffix&&suffix[i]?suffix[i]:''}`,min:0.5,max:3.5,step:0.1,val:vals[i]})); }
+
+/* ---------- 2D tools ---------- */
+let svgId=0;
+function svg2d(o){
+  const [x0,x1,y0,y1]=o.R, W=o.W||340, H=W, pd=16, id='m'+(++svgId);
+  const sx=x=>pd+(x-x0)/(x1-x0)*(W-2*pd), sy=y=>H-pd-(y-y0)/(y1-y0)*(H-2*pd);
+  let s=`<svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg" font-family="IBM Plex Sans Thai, sans-serif">`;
+  s+=`<defs><marker id="${id}" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#1c2230"/></marker></defs>`;
+  if(o.grid!==false){ for(let x=Math.ceil(x0);x<=x1;x++) s+=`<line x1="${sx(x)}" y1="${pd}" x2="${sx(x)}" y2="${H-pd}" stroke="#f0ebe0"/>`;
+    for(let y=Math.ceil(y0);y<=y1;y++) s+=`<line x1="${pd}" y1="${sy(y)}" x2="${W-pd}" y2="${sy(y)}" stroke="#f0ebe0"/>`; }
+  s+=`<line x1="${sx(x0)}" y1="${sy(0)}" x2="${sx(x1)-2}" y2="${sy(0)}" stroke="#1c2230" stroke-width="1.3" marker-end="url(#${id})"/>`;
+  s+=`<line x1="${sx(0)}" y1="${sy(y0)}" x2="${sx(0)}" y2="${sy(y1)+2}" stroke="#1c2230" stroke-width="1.3" marker-end="url(#${id})"/>`;
+  s+=`<text x="${sx(x1)-10}" y="${sy(0)+16}" font-size="14" font-style="italic" font-family="Times New Roman">${o.xl||'x'}</text><text x="${sx(0)+7}" y="${sy(y1)+12}" font-size="14" font-style="italic" font-family="Times New Roman">${o.yl||'y'}</text>`;
+  if(o.ticks){ const st=o.ticks; for(let x=Math.ceil(x0/st)*st;x<x1;x+=st){ if(x===0)continue; s+=`<line x1="${sx(x)}" y1="${sy(0)-3}" x2="${sx(x)}" y2="${sy(0)+3}" stroke="#1c2230"/><text x="${sx(x)}" y="${sy(0)+14}" font-size="10" text-anchor="middle" fill="#6c6f78">${x}</text>`; }
+    for(let y=Math.ceil(y0/st)*st;y<y1;y+=st){ if(y===0)continue; s+=`<line x1="${sx(0)-3}" y1="${sy(y)}" x2="${sx(0)+3}" y2="${sy(y)}" stroke="#1c2230"/><text x="${sx(0)-6}" y="${sy(y)+3.5}" font-size="10" text-anchor="end" fill="#6c6f78">${y}</text>`; } }
+  (o.curves||[]).forEach(c=>{ let d='', pen=false;
+    c.pts.forEach(p=>{ if(!p||!isFinite(p[0])||!isFinite(p[1])||p[0]<x0-1||p[0]>x1+1||p[1]<y0-1||p[1]>y1+1){pen=false;return;} d+=(pen?'L':'M')+sx(p[0]).toFixed(1)+','+sy(p[1]).toFixed(1); pen=true; });
+    s+=`<path d="${d}" fill="none" stroke="${c.color||'#c2410c'}" stroke-width="${c.w||2.6}" ${c.dash?`stroke-dasharray="${c.dash}"`:''} stroke-linecap="round" stroke-linejoin="round" ${c.op?`opacity="${c.op}"`:''}/>`; });
+  (o.dots||[]).forEach(d=>{ s+=`<circle cx="${sx(d.x)}" cy="${sy(d.y)}" r="${d.r||4}" fill="${d.color||'#1c2230'}"/>`; if(d.label) s+=`<text x="${sx(d.x)+7}" y="${sy(d.y)-7}" font-size="12" fill="#1c2230">${d.label}</text>`; });
+  return s+'</svg>';
+}
+const linspace=(a,b,n)=>Array.from({length:n},(_,i)=>a+(b-a)*i/(n-1));
+
+/* ---------- Section 1: 2D lab ---------- */
+(function(){
+  const ids=['A','B','G','h','k']; let half='all';
+  const inp=id=>$('#d2'+id);
+  const presets={c4:[1,1,4,0,0,'all'],ex11:[3,4,5,0,0,'all'],ex12a:[1,1,8,3,-4,'all'],ex12b:[1,1,8,3,-4,'left'],neg:[1,1,-4,0,0,'all'],hyp:[1,-2,4,0,0,'all']};
+  function curvePts(A,B,G,h,k){
+    const e=1e-9; const segs=[]; let type='', std='', dots=[];
+    if(Math.abs(A)<e&&Math.abs(B)<e) return {type:'ไม่ใช่ภาคตัดกรวย (ไม่มีพจน์กำลังสอง)',segs};
+    if(Math.abs(G)<e){
+      if(A*B>0) {type='จุดเดียว'; dots.push({x:h,y:k,color:'#c2410c',r:5});}
+      else if(A*B<0){ const m=Math.sqrt(Math.abs(A/B)); type='เส้นตรงสองเส้นตัดกัน'; [m,-m].forEach(mm=>segs.push(linspace(-12,12,2).map(t=>[h+t,k+mm*t]))); }
+      else { type='เส้นตรงเส้นเดียว'; segs.push(Math.abs(A)>e?[[h,-12],[h,12]]:[[-12,k],[12,k]]); }
+      return {type,segs,dots};
+    }
+    const a=A/G,b=B/G;
+    if(Math.abs(a)>e&&Math.abs(b)>e){
+      if(a>0&&b>0){ const ra=1/Math.sqrt(a), rb=1/Math.sqrt(b);
+        type=near(a,b)?`วงกลม รัศมี ${fmt(ra)}`:`วงรี: a ≈ ${fmt(ra)}, b ≈ ${fmt(rb)}`;
+        std=near(a,b)?`${sqL('x',h)}+${sqL('y',k)}=${fmt(G/A)}`:String.raw`\frac{${sqL('x',h)}}{${fmt(1/a)}}+\frac{${sqL('y',k)}}{${fmt(1/b)}}=1`;
+        segs.push(linspace(0,2*PI,361).map(t=>[h+ra*Math.cos(t),k+rb*Math.sin(t)]));
+        dots.push({x:h,y:k,label:(h||k)?`(${fmt(h)}, ${fmt(k)})`:''});
+      } else if(a<0&&b<0){ type='ไม่มีกราฟ (ผลบวกของกำลังสองเป็นลบไม่ได้)'; std='—'; }
+      else { const ra=1/Math.sqrt(Math.abs(a)), rb=1/Math.sqrt(Math.abs(b));
+        type=a>0?'ไฮเปอร์โบลา เปิดซ้าย–ขวา (ตัดแกน x̄ ไม่ตัดแกน ȳ)':'ไฮเปอร์โบลา เปิดบน–ล่าง (ตัดแกน ȳ ไม่ตัดแกน x̄)';
+        std=a>0?String.raw`\frac{${sqL('x',h)}}{${fmt(1/a)}}-\frac{${sqL('y',k)}}{${fmt(-1/b)}}=1`:String.raw`\frac{${sqL('y',k)}}{${fmt(1/b)}}-\frac{${sqL('x',h)}}{${fmt(-1/a)}}=1`;
+        const U=Math.asinh(14/Math.min(ra,rb));
+        [1,-1].forEach(sg=>segs.push(linspace(-U,U,300).map(u=>a>0?[h+sg*ra*Math.cosh(u),k+rb*Math.sinh(u)]:[h+ra*Math.sinh(u),k+sg*rb*Math.cosh(u)])));
+      }
+    } else { const q=Math.abs(a)>e?a:b, r=1/q;
+      if(r>0){ const d=Math.sqrt(r); type='เส้นตรงขนานกันสองเส้น'; [d,-d].forEach(dd=>segs.push(Math.abs(a)>e?[[h+dd,-12],[h+dd,12]]:[[-12,k+dd],[12,k+dd]])); }
+      else type='ไม่มีกราฟ';
+    }
+    return {type,segs,dots,std};
+  }
+  function filt(seg,h,k){ const e=1e-7; return seg.map(p=>{const ok=half==='up'?p[1]>=k-e:half==='down'?p[1]<=k+e:half==='right'?p[0]>=h-e:half==='left'?p[0]<=h+e:true; return ok?p:null;}); }
+  function update(){
+    const V={}; ids.forEach(i=>{V[i]=parseFloat(inp(i).value); inp(i).nextElementSibling.textContent=fmt(V[i]);});
+    const {A,B,G,h,k}=V;
+    const terms=[]; if(A) terms.push({s:Math.sign(A),t:coefL(Math.abs(A))+sqL('x',h)}); if(B) terms.push({s:Math.sign(B),t:coefL(Math.abs(B))+sqL('y',k)});
+    tex($('#d2eq'),`${joinTerms(terms)}=${fmt(G)}`);
+    const r=curvePts(A,B,G,h,k);
+    $('#d2type').innerHTML=`<span class="badge" style="background:#c2410c">${r.type}</span>`;
+    tex($('#d2std'),r.std||'—');
+    const curves=[];
+    r.segs.forEach(sg=>{ if(half!=='all') curves.push({pts:sg,color:'#c2410c',w:1.6,dash:'5 5',op:0.45}); curves.push({pts:half==='all'?sg:filt(sg,h,k),color:'#c2410c',w:3}); });
+    $('#d2svg').innerHTML=svg2d({R:[-8,8,-8,8],W:380,curves,dots:r.dots||[],ticks:2});
+    // sqrt form for selected half
+    const row=$('#d2halfrow');
+    if(half==='all'||!r.segs.length){ row.style.display=half==='all'?'none':'block'; if(half!=='all') tex($('#d2sq'),'\\text{(ไม่มีกราฟ)}'); return; }
+    row.style.display='block';
+    const vert=half==='up'||half==='down', sg=(half==='up'||half==='right')?'':'-';
+    const [lv,lh,ov,oh,cS,cO]=vert?['y',k,'x',h,B,A]:['x',h,'y',k,A,B];
+    if(Math.abs(cS)<1e-9){ tex($('#d2sq'),`\\text{แก้หา }${lv}\\text{ ไม่ได้ (ไม่มีพจน์ }${lv}^2)`); return; }
+    const num=joinTerms([{s:Math.sign(G/cS)||1,t:fmt(Math.abs(G/cS))}].concat(Math.abs(cO)>1e-9?[{s:-Math.sign(cO/cS),t:qTermL(Math.abs(cO/cS),sqL(ov,oh))}]:[]));
+    tex($('#d2sq'),`${shiftLbl(lv,lh)}=${sg}\\sqrt{${num}}\\quad(${shiftLbl(lv,lh)}${sg?'\\le':'\\ge'}0)`);
+  }
+  ids.forEach(i=>inp(i).addEventListener('input',update));
+  $('#d2half').addEventListener('click',e=>{const b=e.target.closest('button'); if(!b)return; half=b.dataset.v; $$('#d2half button').forEach(x=>x.classList.toggle('on',x===b)); update();});
+  $$('[data-pre]').forEach(b=>b.addEventListener('click',()=>{const p=presets[b.dataset.pre]; ids.forEach((id,i)=>inp(id).value=p[i]); half=p[5]; $$('#d2half button').forEach(x=>x.classList.toggle('on',x.dataset.v===half)); update(); $('#lab2d').scrollIntoView({behavior:'smooth',block:'nearest'});}));
+  update();
+  // gallery
+  const g=[
+    {c:'y=x^2',pts:linspace(-2.2,2.2,90).map(x=>[x,x*x])},
+    {c:'y=-x^2',pts:linspace(-2.2,2.2,90).map(x=>[x,-x*x])},
+    {c:'x=y^2',pts:linspace(-2.2,2.2,90).map(y=>[y*y,y])},
+    {c:'x=-y^2',pts:linspace(-2.2,2.2,90).map(y=>[-y*y,y])},
+    {c:String.raw`\frac{x^2}{a^2}-\frac{y^2}{b^2}=1`,hyp:'x'},
+    {c:String.raw`\frac{y^2}{b^2}-\frac{x^2}{a^2}=1`,hyp:'y'}];
+  const gal=$('#gallery2d');
+  g.forEach(it=>{ let curves;
+    if(it.hyp){ const a=1.2,b=0.9,U=1.9; curves=[1,-1].map(s=>({pts:linspace(-U,U,120).map(u=>it.hyp==='x'?[s*a*Math.cosh(u),b*Math.sinh(u)]:[a*Math.sinh(u),s*b*Math.cosh(u)]),color:'#6d28d9'}));
+      curves.push({pts:[[-4,-4*b/a],[4,4*b/a]],color:'#9ca3af',w:1.2,dash:'4 4'},{pts:[[-4,4*b/a],[4,-4*b/a]],color:'#9ca3af',w:1.2,dash:'4 4'}); }
+    else curves=[{pts:it.pts,color:'#b45309'}];
+    const d=document.createElement('div'); d.className='mini';
+    d.innerHTML=svg2d({R:[-3.4,3.4,-3.4,3.4],W:220,curves,grid:false})+`<div class="cap">\\(${it.c}\\)</div>`;
+    gal.appendChild(d); });
+  typesetEl(gal);
+})();
+
+/* ---------- Section 2: coordinates ---------- */
+(function(){
+  const R=symR(5); let cam='a';
+  const st=managed($('#plot-coord'),()=>{
+    const x=+$('#px').value,y=+$('#py').value,z=+$('#pz').value;
+    const dash={color:'#555',width:3,dash:'dash'};
+    const data=axesTraces(R).concat([
+      {type:'scatter3d',mode:'lines',x:[0,x,x],y:[0,0,y],z:[0,0,0],line:dash,hoverinfo:'skip'},
+      {type:'scatter3d',mode:'lines',x:[x,x],y:[y,y],z:[0,z],line:dash,hoverinfo:'skip'},
+      {type:'scatter3d',mode:'markers',x:[x],y:[y],z:[0],marker:{size:3,color:'#888'},hoverinfo:'skip'},
+      {type:'scatter3d',mode:'markers+text',x:[x],y:[y],z:[z],marker:{size:7,color:'#c2410c'},text:[`(${fmt(x)}, ${fmt(y)}, ${fmt(z)})`],textposition:'top center',textfont:{size:14,color:'#c2410c'},hoverinfo:'skip'}]);
+    return {data,layout:layout3d(R)};
+  },CAM_A);
+  function upd(){ ['px','py','pz'].forEach(i=>$('#'+i).nextElementSibling.textContent=fmt(+$('#'+i).value));
+    tex($('#pcoord'),`P=(${fmt(+$('#px').value)},\\ ${fmt(+$('#py').value)},\\ ${fmt(+$('#pz').value)})`); st.draw(); }
+  ['px','py','pz'].forEach(i=>$('#'+i).addEventListener('input',upd));
+  $('#camsel').addEventListener('click',e=>{const b=e.target.closest('button'); if(!b)return; $$('#camsel button').forEach(x=>x.classList.toggle('on',x===b));
+    const c=b.dataset.v==='a'?CAM_A:CAM_B; st.cam0=clone(c); st.setCamera(c); });
+  upd();
+})();
+
+/* ---------- Labs ---------- */
+// 3-4 Ellipsoid
+makeLab({el:'#lab-ell',R:6,title:'ทรงรี / ทรงกลม',
+  controls:[...abc([3,2,1.5]),{type:'check',id:'lock',label:'ล็อก a = b = c (ทรงกลม)',val:false},
+    {type:'head',label:'เลื่อนจุดศูนย์กลาง (h, k, l)'},
+    {id:'h',label:'h',min:-3,max:3,step:0.5,val:0},{id:'k',label:'k',min:-3,max:3,step:0.5,val:0},{id:'l',label:'l',min:-3,max:3,step:0.5,val:0}],
+  trace:{plane:'z',k:0.5,min:-6,max:6},
+  build(P,lab){
+    $$('[data-wrap="b"],[data-wrap="c"]',lab.root).forEach(w=>w.classList.toggle('disabled',P.lock));
+    const a=P.a,b=P.lock?P.a:P.b,c=P.lock?P.a:P.c; const sph=near(a,b)&&near(b,c);
+    const spec={type:'ellipsoid',axis:'z',a,b,c,center:{x:P.h,y:P.k,z:P.l}};
+    return {spec,badge:sph?'ทรงกลม':'ทรงรี',
+      info:`จุดศูนย์กลาง \\((${fmt(P.h)},${fmt(P.k)},${fmt(P.l)})\\) · ${sph?`รัศมี \\(r=${fmt(a)}\\)`:`ครึ่งแกน \\(a=${fmt(a)},\\ b=${fmt(b)},\\ c=${fmt(c)}\\)`} · สัมประสิทธิ์ ${sph?'<b>เท่ากัน</b> → ทรงกลม':'<b>ไม่เท่ากัน</b> → ทรงรี'}`};
+  }});
+
+// 5 Paraboloid
+makeLab({el:'#lab-par',R:5,title:'พาราโบลอยด์',
+  controls:[axisSeg('axis','แกน (ตัวแปรกำลังหนึ่ง)','z'),{type:'seg',id:'dir',label:'ทิศที่เปิด',options:[['1','ด้านบวก (+)'],['-1','ด้านลบ (−)']],val:'1'},
+    ...abc([1,1,1],null)],
+  trace:{plane:'z',k:2,min:-4.5,max:4.5},
+  build(P,lab){
+    const ax=P.axis, d=+P.dir;
+    ['a','b','c'].forEach((k,i)=>{const sp=$(`[data-wrap="${k}"] span`,lab.root); sp.textContent=AX[i]===ax?`${k} = สัมประสิทธิ์หน้า ${ax} (ความชัน)`:`${k} (ครึ่งแกนคู่กับ ${AX[i]})`;});
+    const spec={type:'parab',axis:ax,dir:d,a:P.a,b:P.b,c:P.c,L:4.5};
+    const [p,q]=localOrder(ax);
+    return {spec,info:`กำลังสอง: \\(${p},${q}\\) (เครื่องหมายเหมือนกัน) · กำลังหนึ่ง: \\(${ax}\\) → แกนของพาราโบลอยด์คือ <b>แกน ${ax}</b> เปิดไปทาง <b>${ax} ${d>0?'บวก':'ลบ'}</b> · จุดยอดที่จุดกำเนิด`};
+  }});
+
+// 6 Hyperboloid
+makeLab({el:'#lab-hyp',R:5,title:'ไฮเปอร์โบลอยด์',
+  controls:[{type:'seg',id:'sh',label:'จำนวนผืน',options:[['1','1 ผืน (ลบ 1 พจน์)'],['2','2 ผืน (ลบ 2 พจน์)']],val:'1'},axisSeg('axis','แกนของพื้นผิว','z'),...abc([1.2,1.2,1.5])],
+  trace:{plane:'z',k:0,min:-4.5,max:4.5},
+  build(P){
+    const t=P.sh==='1'?'hyp1':'hyp2', ax=P.axis, others=AX.filter(v=>v!==ax);
+    const spec={type:t,axis:ax,a:P.a,b:P.b,c:P.c,L:4.5};
+    const info=t==='hyp1'?`พจน์ลบ 1 พจน์ คือ \\(${ax}^2\\) → <b>ท่อคอดผืนเดียว</b> แกนของท่อคือ <b>แกน ${ax}</b> (ไม่ตัดแกน ${ax})`
+      :`พจน์ลบ 2 พจน์ คือ \\(${others[0]}^2, ${others[1]}^2\\) → <b>แยกเป็นสองผืน</b> เปิดตาม <b>แกน ${ax}</b> (ตัวแปรบวกตัวเดียว) ตัดแกน ${ax} ที่ \\(\\pm${fmt({x:P.a,y:P.b,z:P.c}[ax])}\\) และไม่ตัดแกน ${others.join(', ')}`;
+    return {spec,info};
+  }});
+
+// 7 Saddle
+makeLab({el:'#lab-sad',R:5,title:'พื้นผิวอานม้า',
+  controls:[axisSeg('axis','แกนกำลังหนึ่ง (ที่คนขี่นั่งทับ)','z'),{type:'seg',id:'up',label:'แกนกำลังสองที่เป็นบวก (หันหน้าไปทาง)',options:[['x','x'],['y','y'],['z','z']],val:'y'},
+    ...abc([1.2,1.2,1]),{type:'check',id:'rider',label:'แสดงทิศของคนขี่ม้า',val:true}],
+  trace:{plane:'z',k:1,min:-4.5,max:4.5},
+  build(P,lab){
+    const ax=P.axis; let up=P.up;
+    const segUp=$('.seg[data-id="up"]',lab.root);
+    $$('button',segUp).forEach(b=>{b.disabled=b.dataset.v===ax; b.style.opacity=b.disabled?.35:1;});
+    if(up===ax){ up=AX.find(v=>v!==ax); lab.set('up',up); }
+    const dn=AX.find(v=>v!==ax&&v!==up);
+    const spec={type:'saddle',axis:ax,up,a:P.a,b:P.b,c:P.c,L:4};
+    const extra=[];
+    if(P.rider){ const U=e=>({x:e==='x'?1:0,y:e==='y'?1:0,z:e==='z'?1:0}); const u=U(up), r=U(ax), Lr=2.6;
+      extra.push({type:'scatter3d',mode:'lines',x:[0,r.x*Lr],y:[0,r.y*Lr],z:[0,r.z*Lr],line:{color:'#111827',width:9},hoverinfo:'skip'});
+      extra.push({type:'scatter3d',mode:'text',x:[r.x*(Lr+0.5)],y:[r.y*(Lr+0.5)],z:[r.z*(Lr+0.5)],text:['คนขี่นั่งตรงนี้'],textfont:{size:13,color:'#111827'},hoverinfo:'skip'});
+      const L2=3.2; extra.push({type:'scatter3d',mode:'lines',x:[0,u.x*L2],y:[0,u.y*L2],z:[0,u.z*L2],line:{color:'#f59e0b',width:8},hoverinfo:'skip'});
+      extra.push({type:'cone',x:[u.x*L2],y:[u.y*L2],z:[u.z*L2],u:[u.x],v:[u.y],w:[u.z],anchor:'tip',sizemode:'absolute',sizeref:0.7,colorscale:[[0,'#f59e0b'],[1,'#f59e0b']],showscale:false,hoverinfo:'skip'});
+      extra.push({type:'scatter3d',mode:'text',x:[u.x*(L2+0.55)],y:[u.y*(L2+0.55)],z:[u.z*(L2+0.55)],text:['หันหน้า'],textfont:{size:13,color:'#b45309'},hoverinfo:'skip'}); }
+    return {spec,extra,info:`คนขี่นั่งทับ <b>แกน ${ax}</b> (กำลังหนึ่ง) หันหน้าไปทาง <b>แกน ${up}</b> (กำลังสองที่เป็นบวก → อานโค้งขึ้น) ขาห้อยลงตาม <b>แกน ${dn}</b> (กำลังสองที่เป็นลบ)`};
+  }});
+
+// 8 Cone
+makeLab({el:'#lab-cone',R:5,title:'กรวย',
+  controls:[axisSeg('axis','แกนกรวย (ตัวแปรที่อยู่ข้างเดียว)','z'),...abc([1,1,1])],
+  trace:{plane:'z',k:2,min:-4.5,max:4.5},
+  build(P){ const ax=P.axis, [p,q]=localOrder(ax);
+    const spec={type:'cone',axis:ax,a:P.a,b:P.b,c:P.c,L:4.5};
+    return {spec,info:`ฝั่งที่มีสองพจน์ \\((${p}^2, ${q}^2)\\) → ภาคตัดเป็นวงกลม/วงรีใน <b>ระนาบ ${p}${q}</b> · แกนกรวยคือ <b>แกน ${ax}</b> · ยอดกรวยที่จุดกำเนิด · ไม่มีค่าคงที่`}; }});
+
+// 9 Cylinder
+(function(){
+  const PRE={
+    plane:{latex:'x+y=1',axis:'z',curve:[{s0:-3,s1:4,f:s=>({x:s,y:1-s}),n:2}],coeffs:{q:{},l:{x:1,y:1},G:1},R2:[-4,5,-4,5],c2:s=>[s,1-s],s:[-3,4],note:'เส้นตรงในระนาบ xy ยืดตามแกน z → ได้ <b>ระนาบ</b>'},
+    par:{latex:'y=x^2',axis:'z',curve:[{s0:-2.1,s1:2.1,f:s=>({x:s,y:s*s})}],coeffs:{q:{x:1},l:{y:-1},G:0},R2:[-3,3,-1,5],c2:s=>[s,s*s],s:[-2.1,2.1],note:'พาราโบลาในระนาบ xy ยืดตามแกน z → ทรงกระบอกพาราโบลิก'},
+    circ:{latex:'x^2+z^2=1',axis:'y',curve:[{s0:0,s1:2*PI,f:s=>({x:Math.cos(s),z:Math.sin(s)})}],coeffs:{q:{x:1,z:1},G:1},R2:[-2.5,2.5,-2.5,2.5],c2:s=>[Math.cos(s),Math.sin(s)],s:[0,2*PI],note:'วงกลมในระนาบ xz ยืดตามแกน y → <b>ท่อทรงกระบอก</b>'},
+    sin:{latex:'z=\\sin y',axis:'x',curve:[{s0:-4.5,s1:4.5,f:s=>({y:s,z:Math.sin(s)}),n:140}],coeffs:null,R2:[-5,5,-3,3],c2:s=>[s,Math.sin(s)],s:[-4.5,4.5],note:'คลื่นไซน์ในระนาบ yz ยืดตามแกน x → <b>แผ่นลอนคลื่น</b>'},
+    hyp:{latex:'\\frac{x^2}{4}-y^2=1',axis:'z',curve:[1,-1].map(sg=>({s0:-1.45,s1:1.45,f:s=>({x:sg*2*Math.cosh(s),y:Math.sinh(s)})})),coeffs:{q:{x:0.25,y:-1},G:1},R2:[-5,5,-5,5],c2:null,note:'ไฮเปอร์โบลาในระนาบ xy ยืดตามแกน z → ทรงกระบอกไฮเปอร์โบลิก (สองแผ่น)'}
+  };
+  let playing=0;
+  const lab=makeLab({el:'#lab-cyl',R:5,title:'ทรงกระบอก',
+    controls:[{type:'seg',id:'pre',label:'เลือกสมการ',options:[['plane','x + y = 1'],['par','y = x²'],['circ','x² + z² = 1'],['sin','z = sin y'],['hyp','x²/4 − y² = 1']],val:'circ'},
+      {id:'ext',label:'การยืดตามแกนที่ขาดหาย (%)',min:0,max:100,step:1,val:100},
+      {type:'html',html:'<button class="btn primary" data-play style="margin:4px 0 6px">▶ เล่นการยืด</button>'},
+      {type:'html',html:'<div class="subhead">ขั้นที่ 1: เส้นโค้งในระนาบ 2 มิติ</div><div data-svg2 style="background:#fff;border:1px solid var(--line);border-radius:10px;margin-top:6px"></div>'}],
+    trace:{plane:'none',k:0.5,min:-4.5,max:4.5},
+    build(P){ const pr=PRE[P.pre];
+      const spec={type:'cyl',axis:pr.axis,curve:pr.curve,latex:pr.latex,coeffs:pr.coeffs,ext:P.ext/100,L:4.5};
+      const [p,q]=localOrder(pr.axis);
+      return {spec,info:`สมการไม่มีตัวแปร <b>${pr.axis}</b> → วาดเส้นโค้งในระนาบ <b>${p}${q}</b> แล้วยืดขนานแกน <b>${pr.axis}</b> · ${pr.note}`};
+    },
+    after(P,res,lab){ const pr=PRE[P.pre], [p,q]=localOrder(pr.axis);
+      let curves;
+      if(pr.c2) curves=[{pts:linspace(pr.s[0],pr.s[1],200).map(pr.c2),color:'#15803d'}];
+      else curves=[1,-1].map(sg=>({pts:linspace(-1.45,1.45,100).map(s=>[sg*2*Math.cosh(s),Math.sinh(s)]),color:'#15803d'}));
+      $('[data-svg2]',lab.root).innerHTML=svg2d({R:pr.R2,W:250,curves,xl:p,yl:q,ticks:1,grid:false}); }
+  });
+  $('[data-play]',lab.root).addEventListener('click',()=>{
+    cancelAnimationFrame(playing); const t0=performance.now(), inp=$('input[data-id="ext"]',lab.root);
+    const step=t=>{const f=Math.min(1,(t-t0)/1800); inp.value=Math.round(f*100); lab.update(); if(f<1) playing=requestAnimationFrame(step);};
+    playing=requestAnimationFrame(step); });
+})();
+
+/* ---------- worked examples ---------- */
+const EXS={
+  ex31:{type:'ellipsoid',axis:'y',a:Math.sqrt(5),b:Math.sqrt(5),c:Math.sqrt(5),center:{x:-3,y:-2,z:1},clip:{v:'y',s:-1}},
+  ex41:{type:'ellipsoid',axis:'z',a:Math.sqrt(3),b:Math.sqrt(2),c:Math.sqrt(1.5),center:{x:1,y:-2,z:3}},
+  ex51:{type:'parab',axis:'y',dir:-1,a:1,b:3,c:1/Math.sqrt(2),clip:{v:'x',s:-1},L:3.5},
+  ex61:{type:'hyp2',axis:'z',a:1/Math.sqrt(3),b:1,c:1/Math.sqrt(2),clip:{v:'y',s:1},L:3}
+};
+$$('.example[data-ex]').forEach(ex=>{
+  const S=EXS[ex.dataset.ex], steps=$$('.step',ex), ph=$('.placeholder',ex), plotEl=$('.plot',ex);
+  let n=0;
+  const st=managed(plotEl,()=>n>=steps.length?figSpec(S):null);
+  const show=()=>{ steps.forEach((s,i)=>s.classList.toggle('show',i<n)); const done=n>=steps.length; ph.style.display=done?'none':'flex'; $('[data-next]',ex).disabled=done; if(done) st.draw(); };
+  $('[data-next]',ex).addEventListener('click',()=>{n=Math.min(steps.length,n+1);show();});
+  $('[data-all]',ex).addEventListener('click',()=>{n=steps.length;show();});
+  $('[data-reset]',ex).addEventListener('click',()=>{n=0;show(); if(st.drawn){Plotly.purge(plotEl);st.drawn=false;st.bound=false;}});
+  show();
+});
+
+/* ---------- summary table ---------- */
+(function(){
+  const rows=[
+    {k:'sphere',f:'x^2+y^2+z^2=r^2',o:'กำลังสองทั้งสามตัว บวกทั้งหมด สัมประสิทธิ์<b>เท่ากัน</b> ขวามือเป็นบวก',S:{type:'ellipsoid',a:2,b:2,c:2}},
+    {k:'ellipsoid',f:String.raw`\frac{x^2}{a^2}+\frac{y^2}{b^2}+\frac{z^2}{c^2}=1`,o:'กำลังสองทั้งสามตัว บวกทั้งหมด สัมประสิทธิ์<b>ไม่เท่ากัน</b>',S:{type:'ellipsoid',a:2.6,b:1.8,c:1.2}},
+    {k:'parab',f:String.raw`\frac{x^2}{a^2}+\frac{y^2}{b^2}=cz`,o:'กำลังสอง 2 ตัว (เครื่องหมาย<b>เหมือนกัน</b>) + กำลังหนึ่ง 1 ตัว; แกน = ตัวแปรกำลังหนึ่ง',S:{type:'parab',axis:'z',dir:1,a:1,b:1,c:1,L:3}},
+    {k:'hyp1',f:String.raw`\frac{x^2}{a^2}+\frac{y^2}{b^2}-\frac{z^2}{c^2}=1`,o:'กำลังสองทั้งสาม ขวามือ = 1 มี<b>พจน์ลบ 1 พจน์</b>; แกน = ตัวแปรที่เป็นลบ',S:{type:'hyp1',axis:'z',a:1,b:1,c:1,L:3}},
+    {k:'hyp2',f:String.raw`-\frac{x^2}{a^2}-\frac{y^2}{b^2}+\frac{z^2}{c^2}=1`,o:'กำลังสองทั้งสาม ขวามือ = 1 มี<b>พจน์ลบ 2 พจน์</b>; เปิดตามตัวแปรที่เป็นบวก',S:{type:'hyp2',axis:'z',a:1,b:1,c:1,L:3}},
+    {k:'saddle',f:String.raw`\frac{y^2}{b^2}-\frac{x^2}{a^2}=cz`,o:'กำลังสอง 2 ตัว (เครื่องหมาย<b>ต่างกัน</b>) + กำลังหนึ่ง 1 ตัว',S:{type:'saddle',axis:'z',up:'y',a:1,b:1,c:1,L:3}},
+    {k:'cone',f:String.raw`\frac{x^2}{a^2}+\frac{y^2}{b^2}=\frac{z^2}{c^2}`,o:'กำลังสองทั้งสาม <b>ไม่มีค่าคงที่</b>; แกน = ตัวแปรที่อยู่ข้างเดียว',S:{type:'cone',axis:'z',a:1,b:1,c:1,L:3}},
+    {k:'cyl',f:'x^2+z^2=1,\\ \\ y=x^2',o:'<b>ขาดตัวแปรไปหนึ่งตัว</b>; ยืดตามแกนที่ขาด',S:{type:'cyl',axis:'y',latex:'x^2+z^2=1',curve:[{s0:0,s1:2*PI,f:s=>({x:Math.cos(s),z:Math.sin(s)})}],L:3}}
+  ];
+  const tb=$('#sumtable tbody'); let cur=rows[1];
+  tb.innerHTML=rows.map((r,i)=>`<tr class="row" data-i="${i}"><td class="nm">${TH[r.k]}</td><td>\\(${r.f}\\)</td><td>${r.o}</td></tr>`).join('');
+  typesetEl($('#sumtable'));
+  const st=managed($('#plot-sum'),()=>figSpec(cur.S,{R:symR(cur.S.type==='ellipsoid'?3.2:3.6)}));
+  const sel=i=>{cur=rows[i]; $$('#sumtable tr.row').forEach(t=>t.classList.toggle('sel',+t.dataset.i===i));
+    $('#sumeq').innerHTML=`<span class="badge" style="background:${PAL[cur.S.type][0][1]}">${TH[cur.k]}</span><span class="mj"></span>`; tex($('#sumeq .mj'),cur.k==='cyl'?'x^2+z^2=1':cur.f,false);
+    html($('#sumnote'),cur.o); st.draw(); };
+  tb.addEventListener('click',e=>{const tr=e.target.closest('tr.row'); if(tr) sel(+tr.dataset.i);});
+  sel(1);
+})();
+
+/* ---------- classifier ---------- */
+(function(){
+  const ids=['A','B','C','D','E','F','G']; let curS=null, curExtra=[];
+  const st=managed($('#plot-cls'),()=>{ if(!curS) return {data:axesTraces(symR(4)).concat(curExtra),layout:layout3d(symR(4))}; return figSpec(curS,{extra:curExtra}); });
+  function run(){
+    const c={}; ids.forEach(i=>{const v=parseFloat($('#c'+i).value); c[i]=isFinite(v)?v:0;});
+    const q={x:c.A,y:c.B,z:c.C}, l={x:c.D,y:c.E,z:c.F}, e=1e-9;
+    const Q=AX.filter(v=>Math.abs(q[v])>e), Lin=AX.filter(v=>!Q.includes(v)&&Math.abs(l[v])>e), Abs=AX.filter(v=>!Q.includes(v)&&!Lin.includes(v));
+    const C={x:0,y:0,z:0}; let K=c.G;
+    Q.forEach(v=>{C[v]=-l[v]/(2*q[v]); K+=l[v]*l[v]/(4*q[v]);});
+    const steps=[]; let S=null, name='', notes=''; curExtra=[];
+    const orig=joinTerms([...AX.filter(v=>Math.abs(q[v])>e).map(v=>({s:Math.sign(q[v]),t:coefL(Math.abs(q[v]))+v+'^2'})),...AX.filter(v=>Math.abs(l[v])>e).map(v=>({s:Math.sign(l[v]),t:coefL(Math.abs(l[v]))+v}))])+'='+fmt(c.G);
+    steps.push(['สมการที่ใส่',`\\[${orig}\\]`]);
+    if(!Q.length&&!Lin.length){ steps.push(['ผล','ไม่มีตัวแปรเลย — ไม่ใช่สมการพื้นผิว']); return render(steps,null); }
+    const comp=joinTerms([...Q.map(v=>({s:Math.sign(q[v]),t:coefL(Math.abs(q[v]))+sqL(v,C[v])})),...Lin.map(v=>({s:Math.sign(l[v]),t:coefL(Math.abs(l[v]))+v}))])+'='+fmt(K);
+    if(Q.some(v=>Math.abs(l[v])>e)) steps.push(['ขั้นที่ 1 · ทำกำลังสองสมบูรณ์',`\\[${comp}\\]`]);
+    const cen=`\\((h,k,l)=(${fmt(C.x)},${fmt(C.y)},${fmt(C.z)})\\)`;
+    const semi=v=>1/Math.sqrt(Math.abs(q[v]));
+    if(Q.length===3){
+      if(Math.abs(K)<1e-9){
+        const pos=Q.filter(v=>q[v]>0);
+        if(pos.length===3||pos.length===0){ name='จุดเดียว'; notes=`มีเพียงจุด ${cen} เท่านั้นที่สอดคล้อง`; curExtra=centerMarker(C).length?centerMarker(C):[{type:'scatter3d',mode:'markers',x:[0],y:[0],z:[0],marker:{size:6,color:'#c2410c'}}]; }
+        else { const lone=pos.length===1?pos[0]:Q.find(v=>q[v]<0);
+          S={type:'cone',axis:lone,a:semi('x'),b:semi('y'),c:semi('z'),center:C,L:3.5}; name=TH.cone;
+          notes=`ไม่มีค่าคงที่ · ตัวแปรที่อยู่ข้างเดียวคือ ${lone} → แกนกรวยขนานแกน ${lone} · ยอดกรวยที่ ${cen}`; }
+      } else {
+        const al={}; AX.forEach(v=>al[v]=q[v]/K); const neg=AX.filter(v=>al[v]<0), sm={}; AX.forEach(v=>sm[v]=1/Math.sqrt(Math.abs(al[v])));
+        steps.push(['ขั้นที่ 2 · หารด้วย '+fmt(K)+' ให้ขวามือเป็น 1',`\\[${joinTerms(AX.map(v=>({s:Math.sign(al[v]),t:qTermL(Math.abs(al[v]),sqL(v,C[v]))})))}=1\\]`]);
+        if(neg.length===3){ name='ไม่มีกราฟ'; notes='ทุกพจน์เป็นลบแต่ขวามือเป็นบวก — ผลบวกของกำลังสองเป็นลบไม่ได้'; }
+        else if(neg.length===0){ const sph=near(sm.x,sm.y)&&near(sm.y,sm.z); S={type:'ellipsoid',axis:'z',a:sm.x,b:sm.y,c:sm.z,center:C}; name=sph?TH.sphere:TH.ellipsoid;
+          notes=sph?`จุดศูนย์กลาง ${cen} รัศมี ${fmt(sm.x)}`:`จุดศูนย์กลาง ${cen} ครึ่งแกน ${fmt(sm.x)}, ${fmt(sm.y)}, ${fmt(sm.z)}`; }
+        else if(neg.length===1){ S={type:'hyp1',axis:neg[0],a:sm.x,b:sm.y,c:sm.z,center:C,L:3.5}; name=TH.hyp1; notes=`พจน์ลบ 1 พจน์ (${neg[0]}) → แกนท่อขนานแกน ${neg[0]} · ศูนย์กลาง ${cen}`; }
+        else { const ax=AX.find(v=>al[v]>0); S={type:'hyp2',axis:ax,a:sm.x,b:sm.y,c:sm.z,center:C,L:3.5}; name=TH.hyp2; notes=`พจน์ลบ 2 พจน์ → เปิดตามแกน ${ax} · ศูนย์กลาง ${cen}`; }
+      }
+    } else if(Q.length===2&&Lin.length===1){
+      const w=Lin[0], [u,v]=Q; C[w]=K/l[w];
+      if(q[u]*q[v]>0){ const s0=Math.sign(q[u]), dir=Math.sign(-l[w]*s0);
+        S={type:'parab',axis:w,dir,center:C,L:3.5}; S[{x:'a',y:'b',z:'c'}[u]]=semi(u); S[{x:'a',y:'b',z:'c'}[v]]=semi(v); S[{x:'a',y:'b',z:'c'}[w]]=Math.abs(l[w]);
+        name=TH.parab; notes=`กำลังสอง ${u}, ${v} เครื่องหมายเหมือนกัน + กำลังหนึ่ง ${w} → แกนขนานแกน ${w} เปิดไปทาง ${w} ${dir>0?'บวก':'ลบ'} · จุดยอดที่ ${cen.replace('(h,k,l)','(จุดยอด)')}`; }
+      else { const m=-l[w]; const up=m>0?(q[u]>0?u:v):(q[u]<0?u:v);
+        S={type:'saddle',axis:w,up,center:C,L:3}; S[{x:'a',y:'b',z:'c'}[u]]=semi(u); S[{x:'a',y:'b',z:'c'}[v]]=semi(v); S[{x:'a',y:'b',z:'c'}[w]]=Math.abs(l[w]);
+        name=TH.saddle; notes=`กำลังสองเครื่องหมายต่างกัน + กำลังหนึ่ง ${w} → คนขี่นั่งทับแกน ${w} หันหน้าไปทางแกน ${up} · จุดศูนย์กลาง ${cen}`; }
+      steps.push(['ขั้นที่ 2 · รูปมาตรฐาน',`\\[${eqLatex(S)}\\]`]);
+    } else if(Q.length===2&&Abs.length===1){
+      const w=Abs[0], [u,v]=Q;
+      if(Math.abs(K)<1e-9){ name=q[u]*q[v]>0?'เส้นตรง (แกนขนาน '+w+')':'ระนาบสองระนาบตัดกัน'; notes='กรณีเสื่อม (degenerate)'; }
+      else { const a=q[u]/K,b=q[v]/K, su=1/Math.sqrt(Math.abs(a)), sv=1/Math.sqrt(Math.abs(b));
+        const lat=`${joinTerms([{s:Math.sign(a),t:qTermL(Math.abs(a),sqL(u,C[u]))},{s:Math.sign(b),t:qTermL(Math.abs(b),sqL(v,C[v]))}])}=1`;
+        steps.push(['ขั้นที่ 2 · รูปมาตรฐาน',`\\[${lat}\\]`]);
+        let curve=null;
+        if(a>0&&b>0){ curve=[{s0:0,s1:2*PI,f:s=>{const o={};o[u]=su*Math.cos(s);o[v]=sv*Math.sin(s);return o;}}]; name=TH.cyl+(near(a,b)?' (วงกลม)':' (วงรี)'); }
+        else if(a<0&&b<0){ name='ไม่มีกราฟ'; }
+        else { const pos=a>0?u:v, ng=pos===u?v:u, sp=pos===u?su:sv, sn=pos===u?sv:su, U=Math.asinh(3.2/sn);
+          curve=[1,-1].map(sg=>({s0:-U,s1:U,f:s=>{const o={};o[pos]=sg*sp*Math.cosh(s);o[ng]=sn*Math.sinh(s);return o;}})); name=TH.cyl+' (ไฮเปอร์โบลิก)'; }
+        if(curve){ S={type:'cyl',axis:w,curve,latex:lat,center:C,L:Math.max(3,1.3*Math.max(su,sv))}; notes=`ไม่มีตัวแปร ${w} → วาดเส้นโค้งในระนาบ ${u}${v} แล้วยืดขนานแกน ${w}`; }
+        else notes='ทุกพจน์เป็นลบแต่ขวามือเป็นบวก';
+      }
+    } else if(Q.length===1&&Lin.length===1){
+      const u=Q[0], w=Lin[0], ax=Abs[0];
+      const lat=`${coefL(q[u])}${sqL(u,C[u])}${l[w]>0?'+':'-'}${coefL(Math.abs(l[w]))}${w}=${fmt(K)}`;
+      const smax=Math.min(3.2,Math.sqrt((Math.abs(K)+3.2*Math.abs(l[w]))/Math.abs(q[u])));
+      S={type:'cyl',axis:ax,curve:[{s0:-smax,s1:smax,f:s=>{const o={};o[u]=s;o[w]=(K-q[u]*s*s)/l[w];return o;}}],latex:lat,center:Object.assign({},C),L:3.5};
+      name=TH.cyl+' (พาราโบลิก)'; notes=`พาราโบลาในระนาบ ${u}${w} ยืดขนานแกน ${ax} (ตัวแปรที่ขาดหาย)`;
+    } else { name='อยู่นอกขอบเขตของบทนี้'; notes='ลองใส่สมการที่มีพจน์กำลังสองอย่างน้อย 2 ตัว หรือกำลังสอง 1 ตัวกับกำลังหนึ่ง 1 ตัว'; }
+    steps.push(['สรุป',`<span class="result-pill">${name}</span><div style="margin-top:6px">${notes}</div>`]);
+    render(steps,S);
+  }
+  function render(steps,S){
+    const box=$('#clsSteps');
+    box.innerHTML=steps.map(s=>`<div class="st"><div class="sn">${s[0]}</div><div class="mjx">${s[1]}</div></div>`).join('');
+    typesetEl(box); curS=S; st.draw();
+  }
+  ids.forEach(i=>$('#c'+i).addEventListener('input',()=>{clearTimeout(run.t);run.t=setTimeout(run,250);}));
+  $$('[data-c]').forEach(b=>b.addEventListener('click',()=>{b.dataset.c.split(',').forEach((v,i)=>$('#c'+ids[i]).value=v); run();}));
+  run();
+})();
+
+/* ---------- quiz ---------- */
+(function(){
+  const S3=Math.sqrt;
+  const Q=[
+    {e:'4x^2+4y^2+4z^2=36',k:'sphere',a:'ทรงกลม \\(x^2+y^2+z^2=9\\) จุดศูนย์กลาง (0, 0, 0) รัศมี 3',S:{type:'ellipsoid',a:3,b:3,c:3}},
+    {e:'x^2+4y^2+9z^2=36',k:'ellipsoid',a:'ทรงรี \\(\\frac{x^2}{36}+\\frac{y^2}{9}+\\frac{z^2}{4}=1\\) ตัดแกนที่ ±6, ±3, ±2',S:{type:'ellipsoid',a:6,b:3,c:2}},
+    {e:'z=x^2+4y^2',k:'parab',a:'พาราโบลอยด์ จุดยอดที่จุดกำเนิด แกน z เปิดขึ้น (z บวก)',S:{type:'parab',axis:'z',dir:1,a:1,b:0.5,c:1,L:4}},
+    {e:'x^2-y^2+z^2=1',k:'hyp1',a:'ไฮเปอร์โบลอยด์ 1 ผืน แกนท่อคือแกน y (พจน์ \\(y^2\\) เป็นลบ)',S:{type:'hyp1',axis:'y',a:1,b:1,c:1,L:3}},
+    {e:'-x^2+y^2-z^2=4',k:'hyp2',a:'หารด้วย 4: \\(-\\frac{x^2}{4}+\\frac{y^2}{4}-\\frac{z^2}{4}=1\\) ไฮเปอร์โบลอยด์ 2 ผืน เปิดตามแกน y ตัดแกน y ที่ ±2',S:{type:'hyp2',axis:'y',a:2,b:2,c:2,L:5}},
+    {e:'z^2=x^2+y^2',k:'cone',a:'กรวยวงกลม ยอดที่จุดกำเนิด แกนกรวยคือแกน z',S:{type:'cone',axis:'z',a:1,b:1,c:1,L:3}},
+    {e:'4z=x^2-y^2',k:'saddle',a:'พื้นผิวอานม้า: คนขี่นั่งทับแกน z หันหน้าไปทางแกน x (อานโค้งขึ้นตามแนว x และโค้งลงตามแนว y)',S:{type:'saddle',axis:'z',up:'x',a:1,b:1,c:4,L:2}},
+    {e:'y^2+z^2=9',k:'cyl',a:'ทรงกระบอกวงกลมรัศมี 3 (วงกลมในระนาบ yz) ยืดตามแกน x',S:{type:'cyl',axis:'x',latex:'y^2+z^2=9',curve:[{s0:0,s1:2*PI,f:s=>({y:3*Math.cos(s),z:3*Math.sin(s)})}],L:4.5}},
+    {e:'z=-\\sqrt{4-x^2-y^2}',k:'sphere',a:'\\(x^2+y^2+z^2=4;\\ z\\le0\\) <b>ครึ่งทรงกลมล่าง</b> รัศมี 2',S:{type:'ellipsoid',axis:'z',a:2,b:2,c:2,clip:{v:'z',s:-1}}},
+    {e:'(x-1)^2+(y+2)^2=z^2',k:'cone',a:'กรวย ยอดที่ (1, −2, 0) แกนกรวยขนานแกน z',S:{type:'cone',axis:'z',a:1,b:1,c:1,center:{x:1,y:-2,z:0},L:3}},
+    {e:'x-2=\\sqrt{y^2+z^2}',k:'cone',a:'\\((x-2)^2=y^2+z^2;\\ x\\ge2\\) <b>ครึ่งกรวย</b> (กรวยด้านเดียว) ยอดที่ (2, 0, 0) เปิดไปทาง x บวก',S:{type:'cone',axis:'x',a:1,b:1,c:1,center:{x:2,y:0,z:0},clip:{v:'x',s:1},L:3}},
+    {e:'9(x+1)^2+4(y-2)^2+36z^2=36',k:'ellipsoid',a:'หารด้วย 36: \\(\\frac{(x+1)^2}{4}+\\frac{(y-2)^2}{9}+z^2=1\\) ทรงรี จุดศูนย์กลาง (−1, 2, 0) ครึ่งแกน 2, 3, 1',S:{type:'ellipsoid',a:2,b:3,c:1,center:{x:-1,y:2,z:0}}}
+  ];
+  const OPTS=['sphere','ellipsoid','parab','hyp1','hyp2','saddle','cone','cyl'];
+  const list=$('#qlist'); let cur=null, score=0, answered=0;
+  list.innerHTML=Q.map((q,i)=>`<div class="qcard" data-i="${i}"><div class="qtop"><span class="qn">${i+1}.</span><span class="qe">\\(${q.e}\\)</span></div>
+    <div class="opts">${OPTS.map(o=>`<button data-o="${o}">${TH[o]}</button>`).join('')}</div>
+    <div class="qans"><b>เฉลย:</b> ${q.a}<br><button class="btn primary" data-show>ดูกราฟ 3 มิติ ▸</button></div></div>`).join('');
+  typesetEl(list);
+  const st=managed($('#plot-quiz'),()=>cur?figSpec(cur.S):{data:axesTraces(symR(4)),layout:layout3d(symR(4))});
+  const showQ=i=>{cur=Q[i]; html($('#qeq'),`<span class="badge" style="background:${PAL[cur.S.type][0][1]}">ข้อ ${i+1}</span>\\(${cur.e}\\)`); html($('#qnote'),cur.a); st.draw();
+    if(window.innerWidth<820) $('#plot-quiz').scrollIntoView({behavior:'smooth',block:'center'}); };
+  const upd=()=>{ $('#qscore').textContent=`${score} / ${Q.length}`; $('#qbar').style.width=(answered/Q.length*100)+'%'; };
+  list.addEventListener('click',e=>{
+    const card=e.target.closest('.qcard'); if(!card) return; const i=+card.dataset.i, q=Q[i];
+    if(e.target.matches('[data-show]')) return showQ(i);
+    const b=e.target.closest('button[data-o]'); if(!b||card.dataset.done) return;
+    card.dataset.done=1; answered++;
+    const ok=b.dataset.o===q.k; if(ok) score++;
+    $$('button[data-o]',card).forEach(x=>{x.disabled=true; if(x.dataset.o===q.k) x.classList.add('right'); else if(x===b) x.classList.add('bad');});
+    card.classList.add(ok?'correct':'wrong'); $('.qans',card).classList.add('show'); upd();
+  });
+  $('#qreset').addEventListener('click',()=>{ score=0;answered=0; $$('.qcard',list).forEach(c=>{delete c.dataset.done;c.classList.remove('correct','wrong');$('.qans',c).classList.remove('show');$$('button[data-o]',c).forEach(x=>{x.disabled=false;x.classList.remove('right','bad');});}); upd(); });
+  upd();
+})();
+
+/* ---------- nav / scrollspy ---------- */
+(function(){
+  const links=$$('#toc a'); $('#mnav').innerHTML=links.map(a=>`<a href="${a.getAttribute('href')}">${a.firstChild.textContent} ${a.lastChild.textContent}</a>`).join('');
+  const secs=links.map(a=>$(a.getAttribute('href')));
+  const spy=new IntersectionObserver(es=>{es.forEach(e=>{ if(e.isIntersecting){ const id=e.target.id; links.forEach(a=>a.classList.toggle('active',a.getAttribute('href')==='#'+id)); } });},{rootMargin:'-30% 0px -60% 0px'});
+  secs.forEach(s=>s&&spy.observe(s));
+})();
+})();
+</script>
+</body>
+</html>
